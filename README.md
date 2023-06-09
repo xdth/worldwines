@@ -19,7 +19,7 @@ The backend must be configured by a config file, but command line arguments shal
 
 Test coverage
 
-Dependencies
+#### Dependencies
 - If compiling with Archlinux: **`yay -S cpprestsdk`**
 - If compiling with Debian based: **`apt install libcpprest-dev`**
 
