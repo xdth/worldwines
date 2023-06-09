@@ -8,7 +8,7 @@ Search among the most important wines of the planet and obtain interesting infor
 
 ## Tech
 
-C++ for the rest backend, React JS for the front-end, SQLite for the database and shell script for DB seeding.
+C++ for the rest backend, React JS for the front-end and SQLite for the database.
 
 ### API
 
