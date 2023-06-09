@@ -1,4 +1,4 @@
-[UNDER CONSTRUCTION - WORK IN PROGRESS]
+**[UNDER CONSTRUCTION - WORK IN PROGRESS]**
 
 
 # worldwines
@@ -17,19 +17,22 @@ a train-wreck (for now)... but hey, I wanted to create an API in C++ and here it
 
 The backend must be configured by a config file, but command line arguments shall also be implemented.
 
-- Test coverage
+Test coverage
 
-- Dependencies
-apt install libcpprest-dev 
-yay -S cpprestsdk
+Dependencies
+- If compiling with Archlinux: yay -S cpprestsdk
+- If compiling with Debian based: apt install libcpprest-dev
 
 
 #### Endpoints
 
-/
-
-/wines
-- aparece 500 primeiros vinhos
+- [x] **`/wines`** show firs 500 wines (max 500 entries)
+- [x] **`/wines/:wine_id`** show a wine with the given id
+- [ ] **`/wines/countries`** show list of countries in the DB (max 500 entries)
+- [ ] **`/wines/:country`** show wines for a given country (max 500 entries)
+- [ ] **`/wines/:year`** show wines for a given year (max 500 entries)
+- [ ] **`/wines/:variety`** show wines for a given variety (max 500 entries)
+- [ ] **`/wines/:winery`** show wines for a given winery (max 500 entries)
 
 /wines/canada
 - list all wines from Canada
