@@ -20,8 +20,8 @@ The backend must be configured by a config file, but command line arguments shal
 - Test coverage
 
 - Dependencies
-apt install libcpprest-dev
-yay -S cpprestsdk
+-- apt install libcpprest-dev
+-- yay -S cpprestsdk
 
 
 #### Endpoints
