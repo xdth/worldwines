@@ -20,8 +20,8 @@ The backend must be configured by a config file, but command line arguments shal
 Test coverage
 
 Dependencies
-- If compiling with Archlinux: yay -S cpprestsdk
-- If compiling with Debian based: apt install libcpprest-dev
+- If compiling with Archlinux: **`yay -S cpprestsdk`**
+- If compiling with Debian based: **`apt install libcpprest-dev`**
 
 
 #### Endpoints
@@ -34,22 +34,6 @@ Dependencies
 - [ ] **`/wines/:variety`** show wines for a given variety (max 500 entries)
 - [ ] **`/wines/:winery`** show wines for a given winery (max 500 entries)
 
-/wines/canada
-- list all wines from Canada
-
-/wines/1980
-- list all wines from this year (next version)
-
-/wines/variety
-- list all varieties
-
-/wines/winery
-- list all wineries
-
-/wine/:id
-
-/countries
-- list all countries in the database (DISTINCT)
 
 #### Database
 sqlite3
