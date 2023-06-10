@@ -419,10 +419,37 @@ Wine db_list_by_id(int wine_id) { // @todo a much better name is: db_get_wine_by
 
 
 // todo:
-
-// Return all wines from a given country
-void db_list_by_country(const std::string& country) {}
-
+std::vector<Wine> db_list_by_country(const std::string& country) {
+  std::vector<Wine> wines;
+  std::string select_sql = "SELECT * FROM wines WHERE country=? LIMIT 500";
+  sqlite3_stmt* statement;
+  
+  int rc = sqlite3_prepare_v2(db, select_sql.c_str(), -1, &statement, nullptr);
+  if (rc != SQLITE_OK) {
+    std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+    return wines;  // Return an empty vector if preparation fails
+  }
+  
+  rc = sqlite3_bind_text(statement, 1, country.c_str(), -1, SQLITE_STATIC);
+  if (rc != SQLITE_OK) {
+    std::cerr << "Failed to bind country parameter: " << sqlite3_errmsg(db) << std::endl;
+    sqlite3_finalize(statement);
+    return wines;  // Return an empty vector if binding fails
+  }
+  
+  while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
+    Wine wine = retrieve_wine_data(statement);
+    wines.push_back(wine);
+  }
+  
+  if (rc != SQLITE_DONE) {
+    std::cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << std::endl;
+  }
+  
+  sqlite3_finalize(statement);
+  
+  return wines;
+}
 // Return single wine by year
 void db_list_by_year(int year) {}
 
