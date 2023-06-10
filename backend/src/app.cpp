@@ -51,8 +51,6 @@ std::map<std::string, std::string> config_values;
 //--------------------------------------------------------------------
 // Main
 
-
-
 // Signal handler function
 void signal_callback_handler(int signum) {
    std::cout << "Caught signal " << signum << std::endl;
@@ -64,10 +62,7 @@ void signal_callback_handler(int signum) {
 int main(int argc, char *argv[]) {
 
   // Register signal handler
-  // std::signal(SIGTERM, signal_callback_handler);
   std::signal(SIGINT, signal_callback_handler);
-
-  //  signal(SIGINT, signal_callback_handler);
 
   // Read config file keys and values into the map
   config_values = read_config_file(config_file);
@@ -82,76 +77,11 @@ int main(int argc, char *argv[]) {
   // Create the database and tables if the DB doesn't exist, seeding the DB afterwards.
   db_init(config_values["db_name"], config_values["db_table_name"], config_values["seeding_dataset"]);
 
-  // while (true) {
-  // }
+  // Start the server
+  api_start();
 
-    api_start();
-    db_close();
+  // Close DB connection
+  db_close();
 
-  
-
-
-
-
-  // Close the database connection
-  // db_close();
-
-
-
-
-
-    ///////////////////////////////////////
-    // List by id
-
-    // Wine wine = db_list_by_id(517);
-
-    // // Print the individual values of the Wine struct
-    // std::cout << "ID: " << wine.id << std::endl;
-    // std::cout << "Country: " << wine.country << std::endl;
-    // std::cout << "Description: " << wine.description << std::endl;
-    // std::cout << "Designation: " << wine.designation << std::endl;
-    // std::cout << "Points: " << wine.points << std::endl;
-    // std::cout << "Price: " << wine.price << std::endl;
-    // std::cout << "Province: " << wine.province << std::endl;
-    // std::cout << "Region 1: " << wine.region_1 << std::endl;
-    // std::cout << "Region 2: " << wine.region_2 << std::endl;
-    // std::cout << "Taster Name: " << wine.taster_name << std::endl;
-    // std::cout << "Taster Twitter Handle: " << wine.taster_twitter_handle << std::endl;
-    // std::cout << "Title: " << wine.title << std::endl;
-    // std::cout << "Variety: " << wine.variety << std::endl;
-    // std::cout << "Winery: " << wine.winery << std::endl;
-
-
-
-
-    ///////////////////////////////////////
-    // List by wines
-
-    // std::vector<Wine> wines = db_list500();
-
-    // for (const Wine& wine : wines) {
-    //     std::cout << "ID: " << wine.id << std::endl;
-    //     std::cout << "Country: " << wine.country << std::endl;
-    //     std::cout << "Description: " << wine.description << std::endl;
-    //     std::cout << "Designation: " << wine.designation << std::endl;
-    //     std::cout << "Points: " << wine.points << std::endl;
-    //     std::cout << "Price: " << wine.price << std::endl;
-    //     std::cout << "Province: " << wine.province << std::endl;
-    //     std::cout << "Region 1: " << wine.region_1 << std::endl;
-    //     std::cout << "Region 2: " << wine.region_2 << std::endl;
-    //     std::cout << "Taster Name: " << wine.taster_name << std::endl;
-    //     std::cout << "Taster Twitter Handle: " << wine.taster_twitter_handle << std::endl;
-    //     std::cout << "Title: " << wine.title << std::endl;
-    //     std::cout << "Variety: " << wine.variety << std::endl;
-    //     std::cout << "Winery: " << wine.winery << std::endl;
-    //     std::cout << std::endl;
-    // }
-
-
-
-
-    // Close the database connection
-    // db_close();
-
-    return 0;
+  return 0;
 }

@@ -68,7 +68,8 @@ void api_list500(const http_request& request) {
 }
 
 int api_start() {
-  http_listener listener(U("http://localhost:8080")); // @todo: this should be in the config file
+  // http_listener listener(U("http://localhost:8080")); // @todo: this should be in the config file
+  http_listener listener(U("http://0.0.0.0:8080")); // @todo: this should be in the config file
   
   listener.support(methods::GET, [](const http_request& request) {
     auto path = request.relative_uri().path();
@@ -101,11 +102,7 @@ int api_start() {
   try {
     listener
       .open()
-      // .then([]() {std::cout << "Listening on http://localhost:8080\n";})
       .wait();
-    // std::cout << "Server started on port 8080..." << std::endl;
-    // std::cin.get(); // Wait for user input before closing (optional)
-
 
     std::string input;
 
