@@ -38,14 +38,6 @@ void db_close() {
   sqlite3_close(db);
 }
 
-// Callback function for SELECT queries
-// int select_callback(void* data, int argc, char** argv, char** column_names) {
-//   for (int i = 0; i < argc; i++) {
-//     std::cout << column_names[i] << ": " << argv[i] << ", ";
-//   }
-//   std::cout << std::endl;
-//   return 0;
-// }
 
 // Check if the SQLite DB is empty
 bool is_db_table_empty(const std::string& db_table_name) {
@@ -376,9 +368,7 @@ std::vector<Wine> db_list500() { // todo: choose a better name
   
   while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
     // Retrieve wine data from the statement
-    //  ******************
     Wine wine = retrieve_wine_data(statement);
-    //  ******************
     
     wines.push_back(wine);
   }
