@@ -31,6 +31,7 @@ int db_open(const std::string& db_name) {
   return rc;
 }
 
+
 // Close the database connection
 void db_close() {
   std::cout << "DB closed" << std::endl;
@@ -38,13 +39,13 @@ void db_close() {
 }
 
 // Callback function for SELECT queries
-int select_callback(void* data, int argc, char** argv, char** column_names) {
-  for (int i = 0; i < argc; i++) {
-    std::cout << column_names[i] << ": " << argv[i] << ", ";
-  }
-  std::cout << std::endl;
-  return 0;
-}
+// int select_callback(void* data, int argc, char** argv, char** column_names) {
+//   for (int i = 0; i < argc; i++) {
+//     std::cout << column_names[i] << ": " << argv[i] << ", ";
+//   }
+//   std::cout << std::endl;
+//   return 0;
+// }
 
 // Check if the SQLite DB is empty
 bool is_db_table_empty(const std::string& db_table_name) {
@@ -55,7 +56,7 @@ bool is_db_table_empty(const std::string& db_table_name) {
     if (rc != SQLITE_OK) {
         // Handle the error
         std::cerr << "Failed to execute query: " << sqlite3_errmsg(db) << std::endl;
-        return true;
+        return true; // @todo why am I returning true here?
     }
     
     bool is_empty = true;
@@ -282,206 +283,147 @@ int db_seed(const std::string& seeding_dataset, const std::string& db_table_name
   }
 }
 
+// Helper function to retrieve wine data from the statement
+Wine retrieve_wine_data(sqlite3_stmt* statement) {
 
-// Return the 500 first wines in the DB
-std::vector<Wine> db_list500() {
-    std::vector<Wine> wines;
-    std::string select_sql = "SELECT * FROM wines LIMIT 500";
-    sqlite3_stmt* statement;
-
-    int rc = sqlite3_prepare_v2(db, select_sql.c_str(), -1, &statement, nullptr);
-    if (rc != SQLITE_OK) {
-        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
-        return wines;  // Return an empty vector if preparation fails
-    }
-
-    while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
-        // Retrieve wine data from the statement
-        Wine wine;
-        wine.id = sqlite3_column_int(statement, 0);
-
-        const unsigned char* country_text = sqlite3_column_text(statement, 1);
-        if (country_text)
-            wine.country = reinterpret_cast<const char*>(country_text);
-        else
-            wine.country = "";
-
-        const unsigned char* description_text = sqlite3_column_text(statement, 2);
-        if (description_text)
-            wine.description = reinterpret_cast<const char*>(description_text);
-        else
-            wine.description = "";
-
-        const unsigned char* designation_text = sqlite3_column_text(statement, 3);
-        if (designation_text)
-            wine.designation = reinterpret_cast<const char*>(designation_text);
-        else
-            wine.designation = "";
-
-        wine.points = sqlite3_column_int(statement, 4);
-        wine.price = sqlite3_column_double(statement, 5);
-
-        const unsigned char* province_text = sqlite3_column_text(statement, 6);
-        if (province_text)
-            wine.province = reinterpret_cast<const char*>(province_text);
-        else
-            wine.province = "";
-
-        const unsigned char* region_1_text = sqlite3_column_text(statement, 7);
-        if (region_1_text)
-            wine.region_1 = reinterpret_cast<const char*>(region_1_text);
-        else
-            wine.region_1 = "";
-
-        const unsigned char* region_2_text = sqlite3_column_text(statement, 8);
-        if (region_2_text)
-            wine.region_2 = reinterpret_cast<const char*>(region_2_text);
-        else
-            wine.region_2 = "";
-
-        const unsigned char* taster_name_text = sqlite3_column_text(statement, 9);
-        if (taster_name_text)
-            wine.taster_name = reinterpret_cast<const char*>(taster_name_text);
-        else
-            wine.taster_name = "";
-
-        const unsigned char* taster_twitter_handle_text = sqlite3_column_text(statement, 10);
-        if (taster_twitter_handle_text)
-            wine.taster_twitter_handle = reinterpret_cast<const char*>(taster_twitter_handle_text);
-        else
-            wine.taster_twitter_handle = "";
-
-        const unsigned char* title_text = sqlite3_column_text(statement, 11);
-        if (title_text)
-            wine.title = reinterpret_cast<const char*>(title_text);
-        else
-            wine.title = "";
-
-        const unsigned char* variety_text = sqlite3_column_text(statement, 12);
-        if (variety_text)
-            wine.variety = reinterpret_cast<const char*>(variety_text);
-        else
-            wine.variety = "";
-
-        const unsigned char* winery_text = sqlite3_column_text(statement, 13);
-        if (winery_text)
-            wine.winery = reinterpret_cast<const char*>(winery_text);
-        else
-            wine.winery = "";
-
-        wines.push_back(wine);
-    }
-
-    if (rc != SQLITE_DONE) {
-        std::cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << std::endl;
-    }
-
-    sqlite3_finalize(statement);
-
-    return wines;
+  Wine wine;
+  
+  wine.id = sqlite3_column_int(statement, 0);
+  
+  const unsigned char* country_text = sqlite3_column_text(statement, 1);
+  if (country_text)
+    wine.country = reinterpret_cast<const char*>(country_text);
+  else
+    wine.country = "";
+  
+  const unsigned char* description_text = sqlite3_column_text(statement, 2);
+  if (description_text)
+    wine.description = reinterpret_cast<const char*>(description_text);
+  else
+    wine.description = "";
+  
+  const unsigned char* designation_text = sqlite3_column_text(statement, 3);
+  if (designation_text)
+    wine.designation = reinterpret_cast<const char*>(designation_text);
+  else
+    wine.designation = "";
+  
+  wine.points = sqlite3_column_int(statement, 4);
+  wine.price = sqlite3_column_double(statement, 5);
+  
+  const unsigned char* province_text = sqlite3_column_text(statement, 6);
+  if (province_text)
+    wine.province = reinterpret_cast<const char*>(province_text);
+  else
+    wine.province = "";
+  
+  const unsigned char* region_1_text = sqlite3_column_text(statement, 7);
+  if (region_1_text)
+    wine.region_1 = reinterpret_cast<const char*>(region_1_text);
+  else
+    wine.region_1 = "";
+  
+  const unsigned char* region_2_text = sqlite3_column_text(statement, 8);
+  if (region_2_text)
+    wine.region_2 = reinterpret_cast<const char*>(region_2_text);
+  else
+    wine.region_2 = "";
+  
+  const unsigned char* taster_name_text = sqlite3_column_text(statement, 9);
+  if (taster_name_text)
+    wine.taster_name = reinterpret_cast<const char*>(taster_name_text);
+  else
+    wine.taster_name = "";
+  
+  const unsigned char* taster_twitter_handle_text = sqlite3_column_text(statement, 10);
+  if (taster_twitter_handle_text)
+    wine.taster_twitter_handle = reinterpret_cast<const char*>(taster_twitter_handle_text);
+  else
+    wine.taster_twitter_handle = "";
+  
+  const unsigned char* title_text = sqlite3_column_text(statement, 11);
+  if (title_text)
+    wine.title = reinterpret_cast<const char*>(title_text);
+  else
+    wine.title = "";
+  
+  const unsigned char* variety_text = sqlite3_column_text(statement, 12);
+  if (variety_text)
+    wine.variety = reinterpret_cast<const char*>(variety_text);
+  else
+    wine.variety = "";
+  
+  const unsigned char* winery_text = sqlite3_column_text(statement, 13);
+  if (winery_text)
+    wine.winery = reinterpret_cast<const char*>(winery_text);
+  else
+    wine.winery = "";
+  
+  return wine;
 }
+  
+// Return the 500 first wines in the DB
+std::vector<Wine> db_list500() { // todo: choose a better name
+  std::vector<Wine> wines;
+  std::string select_sql = "SELECT * FROM wines LIMIT 500";
+  sqlite3_stmt* statement;
+  
+  int rc = sqlite3_prepare_v2(db, select_sql.c_str(), -1, &statement, nullptr);
+  if (rc != SQLITE_OK) {
+    std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+    return wines;  // Return an empty vector if preparation fails
+  }
+  
+  while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
+    // Retrieve wine data from the statement
+    //  ******************
+    Wine wine = retrieve_wine_data(statement);
+    //  ******************
+    
+    wines.push_back(wine);
+  }
+  
+  if (rc != SQLITE_DONE) {
+    std::cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << std::endl;
+  }
+  
+  sqlite3_finalize(statement);
+  
+  return wines;
+}
+
 
 // Return single wine by id
 Wine db_list_by_id(int wine_id) { // @todo a much better name is: db_get_wine_by_id
-    Wine wine;
-    std::string select_sql = "SELECT * FROM wines WHERE id=?";
-    sqlite3_stmt* statement;
-
-    int rc = sqlite3_prepare_v2(db, select_sql.c_str(), -1, &statement, nullptr);
-    if (rc != SQLITE_OK) {
-        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
-        return wine;  // Return an empty wine object if preparation fails
-    }
-
-    rc = sqlite3_bind_int(statement, 1, wine_id);
-    if (rc != SQLITE_OK) {
-        std::cerr << "Failed to bind wine_id parameter: " << sqlite3_errmsg(db) << std::endl;
-        sqlite3_finalize(statement);
-        return wine;  // Return an empty wine object if binding fails
-    }
-
-    rc = sqlite3_step(statement);
-    if (rc == SQLITE_ROW) {
-        // Retrieve wine data from the statement
-        wine.id = sqlite3_column_int(statement, 0);
-
-        const unsigned char* country_text = sqlite3_column_text(statement, 1);
-        if (country_text)
-            wine.country = reinterpret_cast<const char*>(country_text);
-        else
-            wine.country = "";
-
-        const unsigned char* description_text = sqlite3_column_text(statement, 2);
-        if (description_text)
-            wine.description = reinterpret_cast<const char*>(description_text);
-        else
-            wine.description = "";
-
-        const unsigned char* designation_text = sqlite3_column_text(statement, 3);
-        if (designation_text)
-            wine.designation = reinterpret_cast<const char*>(designation_text);
-        else
-            wine.designation = "";
-
-        wine.points = sqlite3_column_int(statement, 4);
-        wine.price = sqlite3_column_double(statement, 5);
-
-        const unsigned char* province_text = sqlite3_column_text(statement, 6);
-        if (province_text)
-            wine.province = reinterpret_cast<const char*>(province_text);
-        else
-            wine.province = "";
-
-        const unsigned char* region_1_text = sqlite3_column_text(statement, 7);
-        if (region_1_text)
-            wine.region_1 = reinterpret_cast<const char*>(region_1_text);
-        else
-            wine.region_1 = "";
-
-        const unsigned char* region_2_text = sqlite3_column_text(statement, 8);
-        if (region_2_text)
-            wine.region_2 = reinterpret_cast<const char*>(region_2_text);
-        else
-            wine.region_2 = "";
-
-        const unsigned char* taster_name_text = sqlite3_column_text(statement, 9);
-        if (taster_name_text)
-            wine.taster_name = reinterpret_cast<const char*>(taster_name_text);
-        else
-            wine.taster_name = "";
-
-        const unsigned char* taster_twitter_handle_text = sqlite3_column_text(statement, 10);
-        if (taster_twitter_handle_text)
-            wine.taster_twitter_handle = reinterpret_cast<const char*>(taster_twitter_handle_text);
-        else
-            wine.taster_twitter_handle = "";
-
-        const unsigned char* title_text = sqlite3_column_text(statement, 11);
-        if (title_text)
-            wine.title = reinterpret_cast<const char*>(title_text);
-        else
-            wine.title = "";
-
-        const unsigned char* variety_text = sqlite3_column_text(statement, 12);
-        if (variety_text)
-            wine.variety = reinterpret_cast<const char*>(variety_text);
-        else
-            wine.variety = "";
-
-        const unsigned char* winery_text = sqlite3_column_text(statement, 13);
-        if (winery_text)
-            wine.winery = reinterpret_cast<const char*>(winery_text);
-        else
-            wine.winery = "";
-    } else if (rc == SQLITE_DONE) {
-        std::cerr << "No wine found with the specified id: " << wine_id << std::endl;
-    } else {
-        std::cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << std::endl;
-    }
-
+  Wine wine;
+  std::string select_sql = "SELECT * FROM wines WHERE id=?";
+  sqlite3_stmt* statement;
+  
+  int rc = sqlite3_prepare_v2(db, select_sql.c_str(), -1, &statement, nullptr);
+  if (rc != SQLITE_OK) {
+    std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+    return wine;  // Return an empty wine object if preparation fails
+  }
+  
+  rc = sqlite3_bind_int(statement, 1, wine_id);
+  if (rc != SQLITE_OK) {
+    std::cerr << "Failed to bind wine_id parameter: " << sqlite3_errmsg(db) << std::endl;
     sqlite3_finalize(statement);
-
-    return wine;
+    return wine;  // Return an empty wine object if binding fails
+  }
+  
+  rc = sqlite3_step(statement);
+  if (rc == SQLITE_ROW) {
+    wine = retrieve_wine_data(statement);
+  } else if (rc == SQLITE_DONE) {
+    std::cerr << "No wine found with the specified id: " << wine_id << std::endl;
+  } else {
+    std::cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << std::endl;
+  }
+  
+  sqlite3_finalize(statement);
+  
+  return wine;
 }
 
 

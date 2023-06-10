@@ -48,8 +48,8 @@ int db_add(sqlite3* db,
            const std::string& variety,
            const std::string& winery);
 int db_seed(const std::string& seeding_dataset, const std::string& db_table_name);
+Wine retrieve_wine_data(sqlite3_stmt* statement);
 std::vector<Wine> db_list500();
-int db_list500_test();
 Wine db_list_by_id(int wine_id);
 void db_list_by_country(const std::string& country);
 void db_list_by_year(int year);
