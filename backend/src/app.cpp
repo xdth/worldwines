@@ -30,6 +30,7 @@
 #include <unistd.h>
 #include <string>
 #include <map>
+// #include <csignal>
 
 #include "modules/config/config.h"
 #include "modules/database/database.h"
@@ -50,22 +51,51 @@ std::map<std::string, std::string> config_values;
 //--------------------------------------------------------------------
 // Main
 
+
+
+// Signal handler function
+void signal_callback_handler(int signum) {
+   std::cout << "Caught signal " << signum << std::endl;
+   std::cout << "Bye." << std::endl;
+   // Terminate program
+   exit(signum);
+}
+
 int main(int argc, char *argv[]) {
 
-    // Read config file keys and values into the map
-    config_values = read_config_file(config_file);
+  // Register signal handler
+  // std::signal(SIGTERM, signal_callback_handler);
+  std::signal(SIGINT, signal_callback_handler);
 
-    // Exit if there's an issue with the config file (missing, etc.)
-    if (config_values.find("error") != config_values.end()) {
-      std::cerr << "Fatal error - " << config_values["error"] << std::endl;
-      return 1;
-    }
+  //  signal(SIGINT, signal_callback_handler);
 
-    // Create the database and tables if the DB doesn't exist, seeding the DB afterwards.
-    db_init(config_values["db_name"], config_values["db_table_name"], config_values["seeding_dataset"]);
+  // Read config file keys and values into the map
+  config_values = read_config_file(config_file);
 
-    // Start API
+  // Exit if there's an issue with the config file (missing, etc.)
+  if (config_values.find("error") != config_values.end()) {
+
+    std::cerr << "Fatal error - " << config_values["error"] << std::endl;
+    return 1;
+  }
+
+  // Create the database and tables if the DB doesn't exist, seeding the DB afterwards.
+  db_init(config_values["db_name"], config_values["db_table_name"], config_values["seeding_dataset"]);
+
+  // while (true) {
+  // }
+
     api_start();
+    db_close();
+
+  
+
+
+
+
+  // Close the database connection
+  // db_close();
+
 
 
 
@@ -121,7 +151,7 @@ int main(int argc, char *argv[]) {
 
 
     // Close the database connection
-    db_close();
+    // db_close();
 
     return 0;
 }

@@ -68,7 +68,7 @@ void api_list500(const http_request& request) {
 }
 
 int api_start() {
-  http_listener listener(U("http://localhost:8080"));
+  http_listener listener(U("http://localhost:8080")); // @todo: this should be in the config file
   
   listener.support(methods::GET, [](const http_request& request) {
     auto path = request.relative_uri().path();
@@ -80,13 +80,13 @@ int api_start() {
   
   
       try {
-          // Call the function to handle the specific wine ID
-          api_list_by_id(request);
+        // Call the function to handle the specific wine ID
+        api_list_by_id(request);
       } catch (const std::exception& e) {
-          // Invalid wine ID, send an error response
-          http_response response(status_codes::BadRequest);
-          response.set_body(U("Invalid wine ID"));
-          request.reply(response);
+        // Invalid wine ID, send an error response
+        http_response response(status_codes::BadRequest);
+        response.set_body(U("Invalid wine ID"));
+        request.reply(response);
       }
     }
     else if (path == U("/wines"))
@@ -99,9 +99,25 @@ int api_start() {
   });
   
   try {
-    listener.open().wait();
-    std::cout << "Server started on port 8080..." << std::endl;
-    std::cin.get(); // Wait for user input before closing (optional)
+    listener
+      .open()
+      // .then([]() {std::cout << "Listening on http://localhost:8080\n";})
+      .wait();
+    // std::cout << "Server started on port 8080..." << std::endl;
+    // std::cin.get(); // Wait for user input before closing (optional)
+
+
+    std::string input;
+
+    // Check for "q" as input to exit the loop
+    // while (std::getline(std::cin, input) && input != "q");
+    while (input != "q") {
+      std::cout << "Server started. Press 'q' to quit: ";
+      std::getline(std::cin, input);
+      std::cout << "\nWrong option. You entered: " << input << std::endl;
+    }
+
+    // while (true);
     listener.close().wait();
   }
   catch (const std::exception& e) {
