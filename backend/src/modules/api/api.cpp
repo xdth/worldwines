@@ -97,8 +97,8 @@ void api_list_by_country(const http_request& request) {
   // Retrieve the relative URI from the HTTP request and convert it to UTF-8
   std::string country = utility::conversions::to_utf8string(request.relative_uri().path());
 
-  // Remove the leading "/wines/country/" from the URI
-  country = country.substr(std::string("/wines/country/").length());
+  // Remove the leading "/country/" from the URI
+  country = country.substr(std::string("/country/").length());
 
   // Trim leading and trailing whitespace from the country name
   country = std::regex_replace(country, std::regex("^\\s+"), "");
@@ -161,8 +161,8 @@ int api_start() {
       return;
     }
 
-    // Route: /wines/country @todo: rename to /country ?
-    if (path.find(U("/wines/country/")) != std::string::npos) {
+    // Route: /country @todo: rename to /country ?
+    if (path.find(U("/country/")) != std::string::npos) {
       try {
         api_list_by_country(request);
         return;

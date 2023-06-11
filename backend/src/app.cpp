@@ -48,6 +48,7 @@ std::map<std::string, std::string> config_values;
 // int help(); @todo
 
 
+
 //--------------------------------------------------------------------
 // Main
 
@@ -69,7 +70,6 @@ int main(int argc, char *argv[]) {
 
   // Exit if there's an issue with the config file (missing, etc.)
   if (config_values.find("error") != config_values.end()) {
-
     std::cerr << "Fatal error - " << config_values["error"] << std::endl;
     return 1;
   }
