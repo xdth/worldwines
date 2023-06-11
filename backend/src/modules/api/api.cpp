@@ -161,7 +161,7 @@ int api_start() {
       return;
     }
 
-    // Route: /country @todo: rename to /country ?
+    // Route: /country
     if (path.find(U("/country/")) != std::string::npos) {
       try {
         api_list_by_country(request);
