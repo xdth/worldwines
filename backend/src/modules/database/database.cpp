@@ -369,7 +369,6 @@ std::vector<Wine> db_list500() { // todo: choose a better name
   while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
     // Retrieve wine data from the statement
     Wine wine = retrieve_wine_data(statement);
-    
     wines.push_back(wine);
   }
   
@@ -421,7 +420,7 @@ Wine db_list_by_id(int wine_id) { // @todo a much better name is: db_get_wine_by
 // todo:
 std::vector<Wine> db_list_by_country(const std::string& country) {
   std::vector<Wine> wines;
-  std::string select_sql = "SELECT * FROM wines WHERE country=? LIMIT 500";
+  std::string select_sql = "SELECT * FROM wines WHERE country=? COLLATE NOCASE LIMIT 500";
   sqlite3_stmt* statement;
   
   int rc = sqlite3_prepare_v2(db, select_sql.c_str(), -1, &statement, nullptr);
@@ -450,6 +449,8 @@ std::vector<Wine> db_list_by_country(const std::string& country) {
   
   return wines;
 }
+
+
 // Return single wine by year
 void db_list_by_year(int year) {}
 

@@ -3,6 +3,7 @@
 #include <cpprest/http_client.h>
 #include <cpprest/json.h>
 #include <vector>
+#include <regex>
 
 #include "../database/database.h"
 
@@ -10,8 +11,8 @@ using namespace web;
 using namespace web::http;
 using namespace web::http::experimental::listener;
 
-json::value api_return_json(Wine wine) {
 
+json::value api_return_json(Wine wine) {
   json::value wine_json;
   wine_json[U("id")] = json::value::number(wine.id);
   wine_json[U("country")] = json::value::string(utility::conversions::to_string_t(wine.country));
@@ -31,15 +32,39 @@ json::value api_return_json(Wine wine) {
   return wine_json;
 }
 
+
 void api_list_by_id(const http_request& request) {
   // Extract the wine id from the request URL
   auto path = request.relative_uri().path();
-  int wine_id = std::stoi(path.substr(path.find_last_of('/') + 1));
-  
+  std::string id_str = path.substr(path.find_last_of('/') + 1);
+
+  // @todo: move sanitation and validation to a separate function?
+  // Sanitize the wine ID input
+  std::string::size_type chars_processed;
+  int wine_id = 0;
+  try {
+    wine_id = std::stoi(id_str, &chars_processed);
+  } catch (const std::exception& e) {
+    // Invalid wine ID, send an error response
+    http_response response(status_codes::BadRequest);
+    response.set_body(U("Invalid wine ID"));
+    request.reply(response);
+    return;
+  }
+
+  // Validate the wine ID
+  if (chars_processed != id_str.length()) {
+    // Invalid wine ID, send an error response
+    http_response response(status_codes::BadRequest);
+    response.set_body(U("Invalid wine ID"));
+    request.reply(response);
+    return;
+  }
+
   Wine wine = db_list_by_id(wine_id); // Call db_list_by_id with wine_id and populate the wine object
-  
+
   json::value wine_json = api_return_json(wine);
-  
+
   // Send the JSON response
   http_response response(status_codes::OK);
   response.headers().add(U("Content-Type"), U("application/json"));
@@ -67,60 +92,112 @@ void api_list500(const http_request& request) {
   request.reply(response);
 }
 
+
+void api_list_by_country(const http_request& request) {
+  // Retrieve the relative URI from the HTTP request and convert it to UTF-8
+  std::string country = utility::conversions::to_utf8string(request.relative_uri().path());
+
+  // Remove the leading "/wines/country/" from the URI
+  country = country.substr(std::string("/wines/country/").length());
+
+  // Trim leading and trailing whitespace from the country name
+  country = std::regex_replace(country, std::regex("^\\s+"), "");
+  country = std::regex_replace(country, std::regex("\\s+$"), "");
+
+  // Convert the country name to lowercase for case-insensitive comparison
+  std::transform(country.begin(), country.end(), country.begin(), ::tolower);
+
+  // Check if the contry name is empty or contains invalid characters
+  const std::string valid_characters = "abcdefghijklmnopqrstuvwxyz ";
+  if (country.empty() || country.find_first_not_of(valid_characters) != std::string::npos) {
+    // Invalid country name, send an error response
+    http_response response(status_codes::BadRequest);
+    response.set_body(U("Invalid country name"));
+    request.reply(response);
+    return;
+  }
+
+  // Call db_list_by_country to fetch wines by country
+  std::vector<Wine> wines = db_list_by_country(country);
+
+  json::value wines_array = json::value::array();
+
+  for (const auto& wine : wines) {
+    json::value wine_json = api_return_json(wine);
+    wines_array[size_t(wines_array.size())] = wine_json;
+  }
+
+  // Send the JSON response
+  http_response response(status_codes::OK);
+  response.headers().add(U("Content-Type"), U("application/json"));
+  response.set_body(wines_array);
+  request.reply(response);
+}
+
+
 int api_start() {
-  // http_listener listener(U("http://localhost:8080")); // @todo: this should be in the config file
   http_listener listener(U("http://0.0.0.0:8080")); // @todo: this should be in the config file
-  
+
   listener.support(methods::GET, [](const http_request& request) {
     auto path = request.relative_uri().path();
+
+    // Route: /wine
     if (path.find(U("/wine/")) != std::string::npos) {
-      // Extract the wine ID from the URL
-      std::string wineId = utility::conversions::to_utf8string(path.substr(path.find_last_of('/') + 1));
-  
-      // Convert the wine ID string to an integer
-  
-  
       try {
-        // Call the function to handle the specific wine ID
         api_list_by_id(request);
+        return;
       } catch (const std::exception& e) {
-        // Invalid wine ID, send an error response
+        // Invalid argument, send an error response
         http_response response(status_codes::BadRequest);
         response.set_body(U("Invalid wine ID"));
         request.reply(response);
+        return;
       }
     }
-    else if (path == U("/wines"))
+    
+    // Route: /wines
+    if (path == U("/wines")) {
       api_list500(request);
-    else {
-      http_response response(status_codes::NotFound);
-      response.set_body(U("Invalid endpoint"));
-      request.reply(response);
+      return;
     }
+
+    // Route: /wines/country @todo: rename to /country ?
+    if (path.find(U("/wines/country/")) != std::string::npos) {
+      try {
+        api_list_by_country(request);
+        return;
+      } catch (const std::exception& e) {
+        // Invalid argument, send an error response
+        http_response response(status_codes::BadRequest);
+        response.set_body(U("Invalid country name"));
+        request.reply(response);
+        return;
+      }
+    }
+
+    // Invalid endpoint
+    http_response response(status_codes::NotFound);
+    response.set_body(U("Invalid endpoint"));
+    request.reply(response);
   });
-  
+
   try {
-    listener
-      .open()
-      .wait();
+    listener.open().wait();
 
     std::string input;
 
     // Check for "q" as input to exit the loop
-    // while (std::getline(std::cin, input) && input != "q");
     while (input != "q") {
       std::cout << "Server started. Press 'q' to quit: ";
       std::getline(std::cin, input);
       std::cout << "\nWrong option. You entered: " << input << std::endl;
     }
 
-    // while (true);
     listener.close().wait();
-  }
-  catch (const std::exception& e) {
+  } catch (const std::exception& e) {
     std::cout << "Error: " << e.what() << std::endl;
     return 1;
   }
-  
+
   return 0;
 }

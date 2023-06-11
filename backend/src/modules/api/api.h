@@ -22,6 +22,7 @@ using namespace web::http::experimental::listener;
 json::value api_return_json(Wine wine);
 void api_list_by_id(const http_request& request);
 void api_list500(const http_request& request);
+void api_list_by_country(const http_request& request);
 int api_start();
 
 #endif  // API_H
