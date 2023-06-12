@@ -94,52 +94,52 @@ void api_list500(const http_request& request) {
 
 
 void api_list_countries(const http_request& request) {
-  std::vector<std::string> countries = db_list_countries();
+  std::vector<std::string> values = db_list_countries();
   
-  // Convert the vector of countries to a JSON array
-  json::value countries_array = json::value::array();
+  // Convert the vector of values to a JSON array
+  json::value values_array = json::value::array();
   
-  for (const auto& country : countries) {
-    json::value country_json;
-    country_json[U("country")] = json::value::string(country);
-    countries_array[size_t(countries_array.size())] = country_json;
+  for (const auto& value : values) {
+    json::value value_json;
+    value_json[U("value")] = json::value::string(value);
+    values_array[size_t(values_array.size())] = value_json;
   }
 
   // Send the JSON response
   http_response response(status_codes::OK);
   response.headers().add(U("Content-Type"), U("application/json"));
-  response.set_body(countries_array);
+  response.set_body(values_array);
   request.reply(response);
 }
 
 
 void api_list_by_country(const http_request& request) {
   // Retrieve the relative URI from the HTTP request and convert it to UTF-8
-  std::string country = utility::conversions::to_utf8string(request.relative_uri().path());
+  std::string parameter = utility::conversions::to_utf8string(request.relative_uri().path());
 
-  // Remove the leading "/country/" from the URI
-  country = country.substr(std::string("/country/").length());
+  // Remove the leading "/xxxxx/" from the URI
+  parameter = parameter.substr(std::string("/country/").length());
 
-  // Trim leading and trailing whitespace from the country name
-  country = std::regex_replace(country, std::regex("^\\s+"), "");
-  country = std::regex_replace(country, std::regex("\\s+$"), "");
+  // Trim leading and trailing whitespace from the parameter name
+  parameter = std::regex_replace(parameter, std::regex("^\\s+"), "");
+  parameter = std::regex_replace(parameter, std::regex("\\s+$"), "");
 
   // @todo: move validation stuff to a new function?
-  // Convert the country name to lowercase for case-insensitive comparison
-  std::transform(country.begin(), country.end(), country.begin(), ::tolower);
+  // Convert the parameter to lowercase for case-insensitive comparison
+  std::transform(parameter.begin(), parameter.end(), parameter.begin(), ::tolower);
 
-  // Check if the contry name is empty or contains invalid characters
+  // Check if the parameter is empty or contains invalid characters
   const std::string valid_characters = "abcdefghijklmnopqrstuvwxyz ";
-  if (country.empty() || country.find_first_not_of(valid_characters) != std::string::npos) {
-    // Invalid country name, send an error response
+  if (parameter.empty() || parameter.find_first_not_of(valid_characters) != std::string::npos) {
+    // Invalid parameter, send an error response
     http_response response(status_codes::BadRequest);
-    response.set_body(U("Invalid country name"));
+    response.set_body(U("Invalid parameter"));
     request.reply(response);
     return;
   }
 
-  // Call db_list_by_country to fetch wines by country
-  std::vector<Wine> wines = db_list_by_country(country);
+  // Fetch wines by parameter from the DB
+  std::vector<Wine> wines = db_list_by_country(parameter);
 
   json::value wines_array = json::value::array();
 
@@ -154,6 +154,89 @@ void api_list_by_country(const http_request& request) {
   response.set_body(wines_array);
   request.reply(response);
 }
+
+
+void api_list_varieties(const http_request& request) {
+  std::vector<std::string> values = db_list_varieties();
+  
+  // Convert the vector of values to a JSON array
+  json::value values_array = json::value::array();
+  
+  for (const auto& value : values) {
+    json::value value_json;
+    value_json[U("value")] = json::value::string(value);
+    values_array[size_t(values_array.size())] = value_json;
+  }
+
+  // Send the JSON response
+  http_response response(status_codes::OK);
+  response.headers().add(U("Content-Type"), U("application/json"));
+  response.set_body(values_array);
+  request.reply(response);
+}
+
+
+void api_list_by_variety(const http_request& request) {
+  // Retrieve the relative URI from the HTTP request and convert it to UTF-8
+  std::string parameter = utility::conversions::to_utf8string(request.relative_uri().path());
+
+  // Remove the leading "/xxxxx/" from the URI
+  parameter = parameter.substr(std::string("/variety/").length());
+
+  // Trim leading and trailing whitespace from the parameter name
+  parameter = std::regex_replace(parameter, std::regex("^\\s+"), "");
+  parameter = std::regex_replace(parameter, std::regex("\\s+$"), "");
+
+  // @todo: move validation stuff to a new function?
+  // Convert the parameter to lowercase for case-insensitive comparison
+  std::transform(parameter.begin(), parameter.end(), parameter.begin(), ::tolower);
+
+  // Check if the parameter is empty or contains invalid characters
+  const std::string valid_characters = "abcdefghijklmnopqrstuvwxyz ";
+  if (parameter.empty() || parameter.find_first_not_of(valid_characters) != std::string::npos) {
+    // Invalid parameter, send an error response
+    http_response response(status_codes::BadRequest);
+    response.set_body(U("Invalid parameter"));
+    request.reply(response);
+    return;
+  }
+
+  // Fetch wines by parameter from the DB
+  std::vector<Wine> wines = db_list_by_variety(parameter);
+
+  json::value wines_array = json::value::array();
+
+  for (const auto& wine : wines) {
+    json::value wine_json = api_return_json(wine);
+    wines_array[size_t(wines_array.size())] = wine_json;
+  }
+
+  // Send the JSON response
+  http_response response(status_codes::OK);
+  response.headers().add(U("Content-Type"), U("application/json"));
+  response.set_body(wines_array);
+  request.reply(response);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 int api_start() {
@@ -196,7 +279,27 @@ int api_start() {
       } catch (const std::exception& e) {
         // Invalid argument, send an error response
         http_response response(status_codes::BadRequest);
-        response.set_body(U("Invalid country name"));
+        response.set_body(U("Invalid country"));
+        request.reply(response);
+        return;
+      }
+    }
+
+    // Route: /varieties
+    if (path == U("/varieties")) {
+      api_list_varieties(request);
+      return;
+    }
+
+    // Route: /variety
+    if (path.find(U("/variety/")) != std::string::npos) {
+      try {
+        api_list_by_variety(request);
+        return;
+      } catch (const std::exception& e) {
+        // Invalid argument, send an error response
+        http_response response(status_codes::BadRequest);
+        response.set_body(U("Invalid variety"));
         request.reply(response);
         return;
       }
