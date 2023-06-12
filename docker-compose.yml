@@ -17,9 +17,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - 3000:3000
-    volumes:
-      - ./frontend:/app
+      - 80:80  # Expose port 80 for Nginx
     networks:
       - app-network
 

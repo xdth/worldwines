@@ -1,23 +1,21 @@
-# Use an official Node.js base image with a specified version
-FROM node:14-alpine
+# Stage 1: Build the Vite React frontend
+FROM node:14-alpine as build
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the container
-COPY package*.json ./
+COPY package.json yarn.lock ./
 
-# Install dependencies
-RUN npm ci --only=production
+RUN yarn install --frozen-lockfile
 
-# Copy the rest of the source code to the container
 COPY . .
 
-# Build the React.js application
-RUN npm run build
+RUN yarn build
 
-# Expose the port on which the frontend will run
-EXPOSE 3000
+# Stage 2: Serve the built files using Nginx
+FROM nginx:alpine
 
-# Set the command to run the frontend
-CMD ["npm", "start"]
+COPY --from=build /app/dist /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
