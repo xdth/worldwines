@@ -416,8 +416,36 @@ Wine db_list_by_id(int wine_id) { // @todo a much better name is: db_get_wine_by
 }
 
 
+// Retrieve a list of unique countries from the databse
+std::vector<std::string> db_list_countries() {
+  std::vector<std::string> countries;
+  std::string select_sql = "SELECT DISTINCT country FROM wines WHERE country IS NOT NULL AND country <> '' ORDER BY country ASC";
+  sqlite3_stmt* statement;
 
-// todo:
+  int rc = sqlite3_prepare_v2(db, select_sql.c_str(), -1, &statement, nullptr);
+  if (rc != SQLITE_OK) {
+    std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+    return countries;  // Return an empty vector if preparation fails
+  }
+
+  while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
+    // Retrieve the country data from the statement
+    const unsigned char* country = sqlite3_column_text(statement, 0);
+    if (country != nullptr) {
+      countries.push_back(reinterpret_cast<const char*>(country));
+    }
+  }
+
+  if (rc != SQLITE_DONE) {
+    std::cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << std::endl;
+  }
+
+  sqlite3_finalize(statement);
+
+  return countries;
+}
+
+
 std::vector<Wine> db_list_by_country(const std::string& country) {
   std::vector<Wine> wines;
   std::string select_sql = "SELECT * FROM wines WHERE country=? COLLATE NOCASE LIMIT 500";
@@ -450,6 +478,10 @@ std::vector<Wine> db_list_by_country(const std::string& country) {
   return wines;
 }
 
+
+
+
+// todo:
 
 // Return single wine by year
 void db_list_by_year(int year) {}

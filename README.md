@@ -24,12 +24,15 @@ Test coverage
 
 #### Endpoints
 
-- [x] **`/wines`** show firs 500 wines (max 500 entries)
-- [x] **`/wine/:wine_id`** show a wine with the given id
-- [ ] **`/countries`** show list of countries in the DB (max 500 entries)
-- [ ] **`/country/:country`** show wines for a given country (max 500 entries)
+- [x] **`/wines`** show wines (max 500 entries)
+- [x] **`/wine/:wine_id`** show a wine with a given id
+- [x] **`/countries`** show list of countries in the DB
+- [x] **`/country/:country`** show wines for a given country (max 500 entries)
+- [ ] **`/years`** show list of years in the DB
 - [ ] **`/year/:year`** show wines for a given year (max 500 entries)
+- [ ] **`/varieties`** show list of wine varieties in the DB
 - [ ] **`/variety/:variety`** show wines for a given variety (max 500 entries)
+- [ ] **`/wineries`** show list of wineries in the DB
 - [ ] **`/winery/:winery`** show wines for a given winery (max 500 entries)
 
 
