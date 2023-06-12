@@ -92,24 +92,6 @@ void api_list500(const http_request& request) {
   request.reply(response);
 }
 
-// void api_list_countries(const http_request& request) {
-//   // @todo: refactor
-//   std::vector<Wine> wines = db_list_countries();
-  
-//   // Convert the vector of wines to a JSON array
-//   json::value wines_array = json::value::array();
-  
-//   for (const auto& wine : wines) {
-//     json::value wine_json = api_return_json(wine);
-//     wines_array[size_t(wines_array.size())] = wine_json;
-//   }
-
-//   // Send the JSON response
-//   http_response response(status_codes::OK);
-//   response.headers().add(U("Content-Type"), U("application/json"));
-//   response.set_body(wines_array);
-//   request.reply(response);
-// }
 
 void api_list_countries(const http_request& request) {
   std::vector<std::string> countries = db_list_countries();
@@ -129,11 +111,6 @@ void api_list_countries(const http_request& request) {
   response.set_body(countries_array);
   request.reply(response);
 }
-
-
-
-
-
 
 
 void api_list_by_country(const http_request& request) {

@@ -275,6 +275,7 @@ int db_seed(const std::string& seeding_dataset, const std::string& db_table_name
   }
 }
 
+
 // Helper function to retrieve wine data from the statement
 Wine retrieve_wine_data(sqlite3_stmt* statement) {
 
@@ -446,6 +447,7 @@ std::vector<std::string> db_list_countries() {
 }
 
 
+// Retrieve wines for a given country 
 std::vector<Wine> db_list_by_country(const std::string& country) {
   std::vector<Wine> wines;
   std::string select_sql = "SELECT * FROM wines WHERE country=? COLLATE NOCASE LIMIT 500";
@@ -477,8 +479,6 @@ std::vector<Wine> db_list_by_country(const std::string& country) {
   
   return wines;
 }
-
-
 
 
 // todo:

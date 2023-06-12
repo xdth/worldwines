@@ -22,18 +22,18 @@ Test coverage
 - If compiling with Debian based: **`apt install libcpprest-dev`**
 
 
-#### Endpoints
+#### Endpoints implemented
 
 - [x] **`/wines`** show wines (max 500 entries)
 - [x] **`/wine/:wine_id`** show a wine with a given id
 - [x] **`/countries`** show list of countries in the DB
-- [x] **`/country/:country`** show wines for a given country (max 500 entries)
+- [x] **`/country/:country`** show wines for a given country
 - [ ] **`/years`** show list of years in the DB
-- [ ] **`/year/:year`** show wines for a given year (max 500 entries)
+- [ ] **`/year/:year`** show wines for a given year
 - [ ] **`/varieties`** show list of wine varieties in the DB
-- [ ] **`/variety/:variety`** show wines for a given variety (max 500 entries)
+- [ ] **`/variety/:variety`** show wines for a given variety
 - [ ] **`/wineries`** show list of wineries in the DB
-- [ ] **`/winery/:winery`** show wines for a given winery (max 500 entries)
+- [ ] **`/winery/:winery`** show wines for a given winery
 
 
 #### Database
