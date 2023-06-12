@@ -417,10 +417,9 @@ Wine db_list_by_id(int wine_id) { // @todo a much better name is: db_get_wine_by
 }
 
 
-// Retrieve a list of unique countries from the databse
-std::vector<std::string> db_list_countries() {
+// Helper function to manage request processing for array of strings
+std::vector<std::string> db_handle_request_string(std::string select_sql) {
   std::vector<std::string> result;
-  std::string select_sql = "SELECT DISTINCT country FROM wines WHERE country IS NOT NULL AND country <> '' ORDER BY country ASC";
   sqlite3_stmt* statement;
 
   int rc = sqlite3_prepare_v2(db, select_sql.c_str(), -1, &statement, nullptr);
@@ -442,6 +441,48 @@ std::vector<std::string> db_list_countries() {
   }
 
   sqlite3_finalize(statement);
+
+  return result;
+}
+
+// Helper function to manage request processing for array of structs
+std::vector<Wine> db_handle_request_structs(std::string select_sql, const std::string& parameter) {
+  std::vector<Wine> wines;
+  sqlite3_stmt* statement;
+  
+  int rc = sqlite3_prepare_v2(db, select_sql.c_str(), -1, &statement, nullptr);
+  if (rc != SQLITE_OK) {
+    std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+    return wines;  // Return an empty vector if preparation fails
+  }
+  
+  rc = sqlite3_bind_text(statement, 1, parameter.c_str(), -1, SQLITE_STATIC);
+  if (rc != SQLITE_OK) {
+    std::cerr << "Failed to bind parameter: " << sqlite3_errmsg(db) << std::endl;
+    sqlite3_finalize(statement);
+    return wines;  // Return an empty vector if binding fails
+  }
+  
+  while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
+    Wine wine = retrieve_wine_data(statement);
+    wines.push_back(wine);
+  }
+  
+  if (rc != SQLITE_DONE) {
+    std::cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << std::endl;
+  }
+  
+  sqlite3_finalize(statement);
+
+  return wines;
+}
+
+// Retrieve a list of unique countries from the databse
+std::vector<std::string> db_list_countries() {
+  std::vector<std::string> result;
+  std::string select_sql = "SELECT DISTINCT country FROM wines WHERE country IS NOT NULL AND country <> '' ORDER BY country ASC";
+
+  result = db_handle_request_string(select_sql);
 
   return result;
 }
@@ -451,32 +492,9 @@ std::vector<std::string> db_list_countries() {
 std::vector<Wine> db_list_by_country(const std::string& parameter) {
   std::vector<Wine> wines;
   std::string select_sql = "SELECT * FROM wines WHERE country=? COLLATE NOCASE LIMIT 500";
-  sqlite3_stmt* statement;
   
-  int rc = sqlite3_prepare_v2(db, select_sql.c_str(), -1, &statement, nullptr);
-  if (rc != SQLITE_OK) {
-    std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
-    return wines;  // Return an empty vector if preparation fails
-  }
-  
-  rc = sqlite3_bind_text(statement, 1, parameter.c_str(), -1, SQLITE_STATIC);
-  if (rc != SQLITE_OK) {
-    std::cerr << "Failed to bind parameter: " << sqlite3_errmsg(db) << std::endl;
-    sqlite3_finalize(statement);
-    return wines;  // Return an empty vector if binding fails
-  }
-  
-  while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
-    Wine wine = retrieve_wine_data(statement);
-    wines.push_back(wine);
-  }
-  
-  if (rc != SQLITE_DONE) {
-    std::cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << std::endl;
-  }
-  
-  sqlite3_finalize(statement);
-  
+  wines = db_handle_request_structs(select_sql, parameter);
+
   return wines;
 }
 
@@ -485,27 +503,8 @@ std::vector<Wine> db_list_by_country(const std::string& parameter) {
 std::vector<std::string> db_list_varieties() {
   std::vector<std::string> result;
   std::string select_sql = "SELECT DISTINCT variety FROM wines WHERE variety IS NOT NULL AND variety <> '' ORDER BY variety ASC";
-  sqlite3_stmt* statement;
 
-  int rc = sqlite3_prepare_v2(db, select_sql.c_str(), -1, &statement, nullptr);
-  if (rc != SQLITE_OK) {
-    std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
-    return result;  // Return an empty vector if preparation fails
-  }
-
-  while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
-    // Retrieve the data from the statement
-    const unsigned char* value = sqlite3_column_text(statement, 0);
-    if (value != nullptr) {
-      result.push_back(reinterpret_cast<const char*>(value));
-    }
-  }
-
-  if (rc != SQLITE_DONE) {
-    std::cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << std::endl;
-  }
-
-  sqlite3_finalize(statement);
+  result = db_handle_request_string(select_sql);
 
   return result;
 }
@@ -515,31 +514,8 @@ std::vector<std::string> db_list_varieties() {
 std::vector<Wine> db_list_by_variety(const std::string& parameter) {
   std::vector<Wine> wines;
   std::string select_sql = "SELECT * FROM wines WHERE variety=? COLLATE NOCASE LIMIT 500";
-  sqlite3_stmt* statement;
   
-  int rc = sqlite3_prepare_v2(db, select_sql.c_str(), -1, &statement, nullptr);
-  if (rc != SQLITE_OK) {
-    std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
-    return wines;  // Return an empty vector if preparation fails
-  }
-  
-  rc = sqlite3_bind_text(statement, 1, parameter.c_str(), -1, SQLITE_STATIC);
-  if (rc != SQLITE_OK) {
-    std::cerr << "Failed to bind parameter: " << sqlite3_errmsg(db) << std::endl;
-    sqlite3_finalize(statement);
-    return wines;  // Return an empty vector if binding fails
-  }
-  
-  while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
-    Wine wine = retrieve_wine_data(statement);
-    wines.push_back(wine);
-  }
-  
-  if (rc != SQLITE_DONE) {
-    std::cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << std::endl;
-  }
-  
-  sqlite3_finalize(statement);
+  wines = db_handle_request_structs(select_sql, parameter);
   
   return wines;
 }
@@ -549,27 +525,8 @@ std::vector<Wine> db_list_by_variety(const std::string& parameter) {
 std::vector<std::string> db_list_wineries() {
   std::vector<std::string> result;
   std::string select_sql = "SELECT DISTINCT winery FROM wines WHERE winery IS NOT NULL AND winery <> '' ORDER BY winery ASC";
-  sqlite3_stmt* statement;
 
-  int rc = sqlite3_prepare_v2(db, select_sql.c_str(), -1, &statement, nullptr);
-  if (rc != SQLITE_OK) {
-    std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
-    return result;  // Return an empty vector if preparation fails
-  }
-
-  while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
-    // Retrieve the data from the statement
-    const unsigned char* value = sqlite3_column_text(statement, 0);
-    if (value != nullptr) {
-      result.push_back(reinterpret_cast<const char*>(value));
-    }
-  }
-
-  if (rc != SQLITE_DONE) {
-    std::cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << std::endl;
-  }
-
-  sqlite3_finalize(statement);
+  result = db_handle_request_string(select_sql);
 
   return result;
 }
@@ -579,39 +536,8 @@ std::vector<std::string> db_list_wineries() {
 std::vector<Wine> db_list_by_winery(const std::string& parameter) {
   std::vector<Wine> wines;
   std::string select_sql = "SELECT * FROM wines WHERE winery=? COLLATE NOCASE LIMIT 500";
-  sqlite3_stmt* statement;
   
-  int rc = sqlite3_prepare_v2(db, select_sql.c_str(), -1, &statement, nullptr);
-  if (rc != SQLITE_OK) {
-    std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
-    return wines;  // Return an empty vector if preparation fails
-  }
-  
-  rc = sqlite3_bind_text(statement, 1, parameter.c_str(), -1, SQLITE_STATIC);
-  if (rc != SQLITE_OK) {
-    std::cerr << "Failed to bind parameter: " << sqlite3_errmsg(db) << std::endl;
-    sqlite3_finalize(statement);
-    return wines;  // Return an empty vector if binding fails
-  }
-  
-  while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
-    Wine wine = retrieve_wine_data(statement);
-    wines.push_back(wine);
-  }
-  
-  if (rc != SQLITE_DONE) {
-    std::cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << std::endl;
-  }
-  
-  sqlite3_finalize(statement);
-  
+  wines = db_handle_request_structs(select_sql, parameter);
+
   return wines;
 }
-
-
-
-// todo:
-
-// Return single wine by year
-void db_list_by_year(int year) {}
-
