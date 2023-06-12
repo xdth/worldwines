@@ -30,10 +30,8 @@ Test coverage
 - [x] **`/country/:country`** Retrieve wines for a given country
 - [x] **`/varieties`** Retrieve list of wine varieties in the DB
 - [x] **`/variety/:variety`** Retrieve wines for a given variety
-- [ ] **`/wineries`** Retrieve list of wineries in the DB
-- [ ] **`/winery/:winery`** Retrieve wines for a given winery
-- [ ] **`/years`** Retrieve list of years in the DB
-- [ ] **`/year/:year`** Retrieve wines for a given year
+- [x] **`/wineries`** Retrieve list of wineries in the DB
+- [x] **`/winery/:winery`** Retrieve wines for a given winery
 
 
 #### Database

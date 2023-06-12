@@ -220,22 +220,67 @@ void api_list_by_variety(const http_request& request) {
 
 
 
+void api_list_wineries(const http_request& request) {
+  std::vector<std::string> values = db_list_wineries();
+  
+  // Convert the vector of values to a JSON array
+  json::value values_array = json::value::array();
+  
+  for (const auto& value : values) {
+    json::value value_json;
+    value_json[U("value")] = json::value::string(value);
+    values_array[size_t(values_array.size())] = value_json;
+  }
+
+  // Send the JSON response
+  http_response response(status_codes::OK);
+  response.headers().add(U("Content-Type"), U("application/json"));
+  response.set_body(values_array);
+  request.reply(response);
+}
 
 
+void api_list_by_winery(const http_request& request) {
+  // Retrieve the relative URI from the HTTP request and convert it to UTF-8
+  std::string parameter = utility::conversions::to_utf8string(request.relative_uri().path());
 
+  // Remove the leading "/xxxxx/" from the URI
+  parameter = parameter.substr(std::string("/winery/").length());
 
+  // Trim leading and trailing whitespace from the parameter name
+  parameter = std::regex_replace(parameter, std::regex("^\\s+"), "");
+  parameter = std::regex_replace(parameter, std::regex("\\s+$"), "");
 
+  // @todo: move validation stuff to a new function?
+  // Convert the parameter to lowercase for case-insensitive comparison
+  std::transform(parameter.begin(), parameter.end(), parameter.begin(), ::tolower);
 
+  // Check if the parameter is empty or contains invalid characters
+  const std::string valid_characters = "abcdefghijklmnopqrstuvwxyz ";
+  if (parameter.empty() || parameter.find_first_not_of(valid_characters) != std::string::npos) {
+    // Invalid parameter, send an error response
+    http_response response(status_codes::BadRequest);
+    response.set_body(U("Invalid parameter"));
+    request.reply(response);
+    return;
+  }
 
+  // Fetch wines by parameter from the DB
+  std::vector<Wine> wines = db_list_by_winery(parameter);
 
+  json::value wines_array = json::value::array();
 
+  for (const auto& wine : wines) {
+    json::value wine_json = api_return_json(wine);
+    wines_array[size_t(wines_array.size())] = wine_json;
+  }
 
-
-
-
-
-
-
+  // Send the JSON response
+  http_response response(status_codes::OK);
+  response.headers().add(U("Content-Type"), U("application/json"));
+  response.set_body(wines_array);
+  request.reply(response);
+}
 
 
 
@@ -259,7 +304,7 @@ int api_start() {
       }
     }
     
-    // Route: /wines
+    // Route: /wines/:wine
     if (path == U("/wines")) {
       api_list500(request);
       return;
@@ -271,7 +316,7 @@ int api_start() {
       return;
     }
 
-    // Route: /country
+    // Route: /country/:country
     if (path.find(U("/country/")) != std::string::npos) {
       try {
         api_list_by_country(request);
@@ -291,7 +336,7 @@ int api_start() {
       return;
     }
 
-    // Route: /variety
+    // Route: /variety/:variety
     if (path.find(U("/variety/")) != std::string::npos) {
       try {
         api_list_by_variety(request);
@@ -300,6 +345,26 @@ int api_start() {
         // Invalid argument, send an error response
         http_response response(status_codes::BadRequest);
         response.set_body(U("Invalid variety"));
+        request.reply(response);
+        return;
+      }
+    }
+
+    // Route: /wineries
+    if (path == U("/wineries")) {
+      api_list_wineries(request);
+      return;
+    }
+
+    // Route: /winery/:winery
+    if (path.find(U("/winery/")) != std::string::npos) {
+      try {
+        api_list_by_winery(request);
+        return;
+      } catch (const std::exception& e) {
+        // Invalid argument, send an error response
+        http_response response(status_codes::BadRequest);
+        response.set_body(U("Invalid winery"));
         request.reply(response);
         return;
       }

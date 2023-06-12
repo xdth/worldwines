@@ -545,7 +545,68 @@ std::vector<Wine> db_list_by_variety(const std::string& parameter) {
 }
 
 
+// Retrieve list of wineries in the DB
+std::vector<std::string> db_list_wineries() {
+  std::vector<std::string> result;
+  std::string select_sql = "SELECT DISTINCT winery FROM wines WHERE winery IS NOT NULL AND winery <> '' ORDER BY winery ASC";
+  sqlite3_stmt* statement;
 
+  int rc = sqlite3_prepare_v2(db, select_sql.c_str(), -1, &statement, nullptr);
+  if (rc != SQLITE_OK) {
+    std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+    return result;  // Return an empty vector if preparation fails
+  }
+
+  while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
+    // Retrieve the data from the statement
+    const unsigned char* value = sqlite3_column_text(statement, 0);
+    if (value != nullptr) {
+      result.push_back(reinterpret_cast<const char*>(value));
+    }
+  }
+
+  if (rc != SQLITE_DONE) {
+    std::cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << std::endl;
+  }
+
+  sqlite3_finalize(statement);
+
+  return result;
+}
+
+
+// Retrieve wines for a given winery
+std::vector<Wine> db_list_by_winery(const std::string& parameter) {
+  std::vector<Wine> wines;
+  std::string select_sql = "SELECT * FROM wines WHERE winery=? COLLATE NOCASE LIMIT 500";
+  sqlite3_stmt* statement;
+  
+  int rc = sqlite3_prepare_v2(db, select_sql.c_str(), -1, &statement, nullptr);
+  if (rc != SQLITE_OK) {
+    std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+    return wines;  // Return an empty vector if preparation fails
+  }
+  
+  rc = sqlite3_bind_text(statement, 1, parameter.c_str(), -1, SQLITE_STATIC);
+  if (rc != SQLITE_OK) {
+    std::cerr << "Failed to bind parameter: " << sqlite3_errmsg(db) << std::endl;
+    sqlite3_finalize(statement);
+    return wines;  // Return an empty vector if binding fails
+  }
+  
+  while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
+    Wine wine = retrieve_wine_data(statement);
+    wines.push_back(wine);
+  }
+  
+  if (rc != SQLITE_DONE) {
+    std::cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << std::endl;
+  }
+  
+  sqlite3_finalize(statement);
+  
+  return wines;
+}
 
 
 
@@ -554,6 +615,3 @@ std::vector<Wine> db_list_by_variety(const std::string& parameter) {
 // Return single wine by year
 void db_list_by_year(int year) {}
 
-
-// Return wines by winery
-void db_list_by_winery(const std::string& winery) {}

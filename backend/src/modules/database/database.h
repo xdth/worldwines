@@ -56,7 +56,8 @@ std::vector<Wine> db_list_by_country(const std::string& country);
 void db_list_by_year(int year);
 std::vector<std::string> db_list_varieties();
 std::vector<Wine> db_list_by_variety(const std::string& parameter);
-void db_list_by_winery(const std::string& winery);
+std::vector<std::string> db_list_wineries();
+std::vector<Wine> db_list_by_winery(const std::string& parameter);
 void db_close();
 
 #endif  // DATABASE_H
