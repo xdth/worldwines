@@ -33,7 +33,7 @@ json::value api_return_json(Wine wine) {
 }
 
 // Send the JSON response
-void api_send_json_response_ok(json::value value, const http_request& request) {
+void api_send_response_ok(json::value value, const http_request& request) {
   http_response response(status_codes::OK);
   response.headers().add(U("Content-Type"), U("application/json"));
   response.set_body(value);
@@ -41,7 +41,7 @@ void api_send_json_response_ok(json::value value, const http_request& request) {
 }
 
 // Invalid argument, send an error response
-void api_send_json_response_not_ok(std::string message, const http_request& request) {
+void api_send_response_not_ok(std::string message, const http_request& request) {
     http_response response(status_codes::BadRequest);
     response.set_body(U(message));
     request.reply(response);
@@ -59,13 +59,13 @@ void api_list_by_id(const http_request& request) {
   try {
     wine_id = std::stoi(id_str, &chars_processed);
   } catch (const std::exception& e) {
-    api_send_json_response_not_ok("Invalid wine ID", request);
+    api_send_response_not_ok("Invalid wine ID", request);
     return;
   }
 
   // Validate the wine ID
   if (chars_processed != id_str.length()) {
-    api_send_json_response_not_ok("Invalid wine ID", request);
+    api_send_response_not_ok("Invalid wine ID", request);
     return;
   }
 
@@ -74,7 +74,7 @@ void api_list_by_id(const http_request& request) {
   json::value wine_json = api_return_json(wine);
 
   // Send the JSON response
-  api_send_json_response_ok(wine_json, request);
+  api_send_response_ok(wine_json, request);
 }
 
 
@@ -91,7 +91,7 @@ void api_list500(const http_request& request) {
   }
 
   // Send the JSON response
-  api_send_json_response_ok(wines_array, request);
+  api_send_response_ok(wines_array, request);
 }
 
 
@@ -108,7 +108,7 @@ void api_list_countries(const http_request& request) {
   }
 
   // Send the JSON response
-  api_send_json_response_ok(values_array, request);
+  api_send_response_ok(values_array, request);
 }
 
 
@@ -131,7 +131,7 @@ void api_list_by_country(const http_request& request) {
   const std::string valid_characters = "abcdefghijklmnopqrstuvwxyz ";
   if (parameter.empty() || parameter.find_first_not_of(valid_characters) != std::string::npos) {
     // Invalid parameter, send an error response
-    api_send_json_response_not_ok("Invalid country", request);
+    api_send_response_not_ok("Invalid country", request);
     return;
   }
 
@@ -146,7 +146,7 @@ void api_list_by_country(const http_request& request) {
   }
 
   // Send the JSON response
-  api_send_json_response_ok(wines_array, request);
+  api_send_response_ok(wines_array, request);
 }
 
 
@@ -163,7 +163,7 @@ void api_list_varieties(const http_request& request) {
   }
 
   // Send the JSON response
-  api_send_json_response_ok(values_array, request);
+  api_send_response_ok(values_array, request);
 }
 
 
@@ -186,7 +186,7 @@ void api_list_by_variety(const http_request& request) {
   const std::string valid_characters = "abcdefghijklmnopqrstuvwxyz ";
   if (parameter.empty() || parameter.find_first_not_of(valid_characters) != std::string::npos) {
     // Invalid parameter, send an error response
-    api_send_json_response_not_ok("Invalid variety", request);
+    api_send_response_not_ok("Invalid variety", request);
   }
 
   // Fetch wines by parameter from the DB
@@ -200,7 +200,7 @@ void api_list_by_variety(const http_request& request) {
   }
 
   // Send the JSON response
-  api_send_json_response_ok(wines_array, request);
+  api_send_response_ok(wines_array, request);
 }
 
 
@@ -217,7 +217,7 @@ void api_list_wineries(const http_request& request) {
   }
 
   // Send the JSON response
-  api_send_json_response_ok(values_array, request);
+  api_send_response_ok(values_array, request);
 }
 
 
@@ -240,7 +240,7 @@ void api_list_by_winery(const http_request& request) {
   const std::string valid_characters = "abcdefghijklmnopqrstuvwxyz ";
   if (parameter.empty() || parameter.find_first_not_of(valid_characters) != std::string::npos) {
     // Invalid parameter, send an error response
-    api_send_json_response_not_ok("Invalid winery", request);
+    api_send_response_not_ok("Invalid winery", request);
     return;
   }
 
@@ -255,7 +255,7 @@ void api_list_by_winery(const http_request& request) {
   }
 
   // Send the JSON response
-  api_send_json_response_ok(wines_array, request);
+  api_send_response_ok(wines_array, request);
 }
 
 
