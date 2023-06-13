@@ -14,12 +14,13 @@ COPY . /app
 RUN apt-get update && apt-get install -y libcpprest-dev
 
 # Build the C++ application
-# RUN g++ -o backend main.cpp
-# RUN ./compile.sh
 RUN g++ -Wall -o app src/app.cpp src/modules/config/config.cpp src/modules/database/database.cpp src/modules/api/api.cpp -lsqlite3 -lcpprest -lssl -lcrypto
 
 # Expose the port on which the backend will listen
 EXPOSE 8080
+
+# Debug
+RUN ls -la
 
 # Set the command to run the backend
 CMD ["./app"]

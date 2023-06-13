@@ -11,6 +11,16 @@ using namespace web;
 using namespace web::http;
 using namespace web::http::experimental::listener;
 
+// Check if the input stream is interactive
+// (i.e. "using docker run -it ..." instead of "docker-compose up")
+#ifdef __linux__
+#include <unistd.h>
+#define INTERACTIVE_MODE isatty(fileno(stdin))
+#elif defined(_WIN32) || defined(WIN32)
+#include <io.h>
+#define INTERACTIVE_MODE _isatty(_fileno(stdin))
+#endif
+
 
 json::value api_return_json(Wine wine) {
   json::value wine_json;
@@ -261,9 +271,9 @@ void api_list_by_winery(const http_request& request) {
 
 
 int api_start() {
-  http_listener listener(U("http://0.0.0.0:8080")); // @todo: this should be in the config file
+  std::shared_ptr<http_listener> listener_ptr = std::make_shared<http_listener>(U("http://0.0.0.0:8080"));
 
-  listener.support(methods::GET, [](const http_request& request) {
+  listener_ptr->support(methods::GET, [](const http_request& request) {
     auto path = request.relative_uri().path();
 
     // Route: /wine
@@ -353,18 +363,26 @@ int api_start() {
   });
 
   try {
-    listener.open().wait();
+    listener_ptr->open().then([&listener_ptr]() {
+      std::string input;
 
-    std::string input;
+      while (input != "q") {
+        std::cout << "Server started on port X. Press 'q' to quit: "; // @todo: port from the config file
 
-    // Check for "q" as input to exit the loop
-    while (input != "q") {
-      std::cout << "Server started. Press 'q' to quit: ";
-      std::getline(std::cin, input);
-      std::cout << "\nWrong option. You entered: " << input << std::endl;
-    }
+        if (INTERACTIVE_MODE || getenv("DOCKER_COMPOSE")) {
+          std::getline(std::cin, input);
+        } else {
+          // Handle non-interactive mode
+          input = "q";  // Set a default value to exit the loop
+        }
 
-    listener.close().wait();
+        if (input != "q") {
+          std::cout << "\nWrong option. You entered xxx yyy: " << input << std::endl;
+        }
+      }
+
+      listener_ptr->close().wait();
+    }).wait();
   } catch (const std::exception& e) {
     std::cout << "Error: " << e.what() << std::endl;
     return 1;
