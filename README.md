@@ -3,7 +3,7 @@
 
 # worldwines
 
-Search among the most important wines of the planet and obtain interesting information and reviews.
+Search among the most important wines of the planet to obtain interesting information and reviews.
 
 
 ## Tech
