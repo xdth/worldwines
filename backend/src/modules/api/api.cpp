@@ -1,9 +1,12 @@
 #include <iostream>
+#include <memory>
 #include <cpprest/http_listener.h>
 #include <cpprest/http_client.h>
 #include <cpprest/json.h>
+#include <cpprest/uri.h>
 #include <vector>
 #include <regex>
+#include <future>
 
 #include "../database/database.h"
 
@@ -44,8 +47,14 @@ json::value api_return_json(Wine wine) {
 
 // Send the JSON response
 void api_send_response_ok(json::value value, const http_request& request) {
+
+  // Enabling CORS
   http_response response(status_codes::OK);
+  response.headers().add(U("Access-Control-Allow-Origin"), U("*"));
+  response.headers().add(U("Access-Control-Allow-Methods"), U("GET, POST, OPTIONS"));
+  response.headers().add(U("Access-Control-Allow-Headers"), U("Content-Type"));
   response.headers().add(U("Content-Type"), U("application/json"));
+
   response.set_body(value);
   request.reply(response); 
 }
@@ -269,11 +278,10 @@ void api_list_by_winery(const http_request& request) {
 }
 
 
-
 int api_start() {
   std::shared_ptr<http_listener> listener_ptr = std::make_shared<http_listener>(U("http://0.0.0.0:8080"));
 
-  listener_ptr->support(methods::GET, [](const http_request& request) {
+  listener_ptr->support(methods::GET, [=](http_request request) {
     auto path = request.relative_uri().path();
 
     // Route: /wine
@@ -357,36 +365,48 @@ int api_start() {
     }
 
     // Invalid endpoint
-    http_response response(status_codes::NotFound);
-    response.set_body(U("Invalid endpoint"));
-    request.reply(response);
+    http_response response_not_found(status_codes::NotFound);
+    response_not_found.set_body(U("Invalid endpoint"));
+    request.reply(response_not_found);
   });
 
-  try {
-    listener_ptr->open().then([&listener_ptr]() {
+try {
+  listener_ptr->open().then([&listener_ptr]() {
+    if (INTERACTIVE_MODE || getenv("DOCKER_COMPOSE")) {
+      // Interactive mode
       std::string input;
+      bool should_exit = false;
 
-      while (input != "q") {
+      while (!should_exit) {
         std::cout << "Server started on port X. Press 'q' to quit: "; // @todo: port from the config file
 
-        if (INTERACTIVE_MODE || getenv("DOCKER_COMPOSE")) {
-          std::getline(std::cin, input);
+        if (std::getline(std::cin, input)) {
+          if (input == "q") {
+            listener_ptr->close().wait();
+            should_exit = true;
+          } else {
+            std::cout << "Wrong option " << input << std::endl;
+          }
         } else {
-          // Handle non-interactive mode
-          input = "q";  // Set a default value to exit the loop
-        }
-
-        if (input != "q") {
-          std::cout << "\nWrong option. You entered xxx yyy: " << input << std::endl;
+          // Handle error or end-of-file condition
+          std::cerr << "Error reading input. Exiting loop." << std::endl;
+          should_exit = true;
         }
       }
+    } else {
+      // Non-interactive mode
+      std::cout << "Non-interactive mode, listener will remain open." << std::endl;
 
-      listener_ptr->close().wait();
-    }).wait();
-  } catch (const std::exception& e) {
-    std::cout << "Error: " << e.what() << std::endl;
-    return 1;
-  }
+      // Keep the listener open indefinitely
+      std::promise<void> exit_signal;
+      std::future<void> future_obj = exit_signal.get_future();
+      future_obj.wait();
+    }
+  }).wait();
+} catch (const std::exception& e) {
+  std::cout << "Error: " << e.what() << std::endl;
+  return 1;
+}
 
   return 0;
 }

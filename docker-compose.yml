@@ -5,10 +5,11 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    container_name: worldwines_backend
     ports:
       - 8080:8080
-    volumes:
-      - ./backend:/app
+    # volumes:
+    #   - ./backend:/app
     networks:
       - app-network
 
@@ -16,6 +17,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    container_name: worldwines_frontend
     ports:
       - 5000:80  # Expose port 80 for Nginx
     networks:
