@@ -1,33 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { StyledInput, Input, MagnifyingGlass } from './styles';
 
-const StyledInput = styled.div`
-  position: relative;
-  display: inline-block;
-`;
-
-const Input = styled.input`
-  border: none;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-bottom: 1px solid white;
-  color: white;
-  background-color: transparent;
-  outline: none;
-  padding-right: 30px;
-  width: 200px;
-  text-align: center;
-`;
-
-const MagnifyingGlass = styled.svg`
-  position: absolute;
-  top: 50%;
-  right: 5px;
-  transform: translateY(-50%);
-  fill: white;
-`;
 
 const TextInput: React.FC = () => {
   return (
