@@ -32,6 +32,7 @@ Test coverage
 - [x] **`/variety/:variety`** Retrieve wines for a given variety
 - [x] **`/wineries`** Retrieve list of wineries in the DB
 - [x] **`/winery/:winery`** Retrieve wines for a given winery
+- [x] **`/search/:search_string`** Searches the db for a given string
 
 
 #### Database

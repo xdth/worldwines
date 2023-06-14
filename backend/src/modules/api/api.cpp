@@ -278,6 +278,49 @@ void api_list_by_winery(const http_request& request) {
 }
 
 
+
+
+void api_search(const http_request& request) {
+  // Retrieve the relative URI from the HTTP request and convert it to UTF-8
+  std::string parameter = utility::conversions::to_utf8string(request.relative_uri().path());
+
+  // Remove the leading "/xxxxx/" from the URI
+  parameter = parameter.substr(std::string("/search/").length());
+
+  // Trim leading and trailing whitespace from the parameter name
+  parameter = std::regex_replace(parameter, std::regex("^\\s+"), "");
+  parameter = std::regex_replace(parameter, std::regex("\\s+$"), "");
+
+  // @todo: move validation stuff to a new function?
+  // Convert the parameter to lowercase for case-insensitive comparison
+  std::transform(parameter.begin(), parameter.end(), parameter.begin(), ::tolower);
+
+  // Check if the parameter is empty or contains invalid characters
+  const std::string valid_characters = "abcdefghijklmnopqrstuvwxyz ";
+  if (parameter.empty() || parameter.find_first_not_of(valid_characters) != std::string::npos) {
+    // Invalid parameter, send an error response
+    api_send_response_not_ok("Invalid search", request);
+    return;
+  }
+
+  // Fetch wines by parameter from the DB
+  std::vector<Wine> wines = db_search(parameter);
+
+  json::value wines_array = json::value::array();
+
+  for (const auto& wine : wines) {
+    json::value wine_json = api_return_json(wine);
+    wines_array[size_t(wines_array.size())] = wine_json;
+  }
+
+  // Send the JSON response
+  api_send_response_ok(wines_array, request);
+}
+
+
+
+
+
 int api_start() {
   std::shared_ptr<http_listener> listener_ptr = std::make_shared<http_listener>(U("http://0.0.0.0:8080"));
 
@@ -359,6 +402,20 @@ int api_start() {
         // Invalid argument, send an error response
         http_response response(status_codes::BadRequest);
         response.set_body(U("Invalid winery"));
+        request.reply(response);
+        return;
+      }
+    }
+
+    // Route: /search/:search_string
+    if (path.find(U("/search/")) != std::string::npos) {
+      try {
+        api_search(request);
+        return;
+      } catch (const std::exception& e) {
+        // Invalid argument, send an error response
+        http_response response(status_codes::BadRequest);
+        response.set_body(U("Invalid search"));
         request.reply(response);
         return;
       }

@@ -541,3 +541,83 @@ std::vector<Wine> db_list_by_winery(const std::string& parameter) {
 
   return wines;
 }
+
+
+// Retrieve wines containing a given string
+// Search on country,description,designation,province,region_1,region_2,taster_name,taster_twitter_handle,title,variety,winery
+// std::vector<Wine> db_search(const std::string& parameter) {
+//   std::vector<Wine> wines;
+//   // std::string select_sql = "SELECT * FROM wines WHERE country=? COLLATE NOCASE LIMIT 500";
+//   std::string select_sql = R"(
+//     SELECT DISTINCT *
+//     FROM wines
+//     WHERE 
+//         country LIKE '%?%'
+//         OR description LIKE '%?%'
+//         OR designation LIKE '%?%'
+//         OR province LIKE '%?%'
+//         OR region_1 LIKE '%?%'
+//         OR region_2 LIKE '%?%'
+//         OR taster_name LIKE '%?%'
+//         OR taster_twitter_handle LIKE '%?%'
+//         OR title LIKE '%?%'
+//         OR variety LIKE '%?%'
+//         OR winery LIKE '%?%'
+//   )";
+
+//   wines = db_handle_request_structs(select_sql, parameter);
+
+//   return wines;
+// }
+
+std::vector<Wine> db_search(const std::string& parameter) {
+  std::vector<Wine> wines;
+  std::string select_sql = R"(
+    SELECT DISTINCT *
+    FROM wines
+    WHERE 
+        country LIKE '%' || ? || '%'
+        OR description LIKE '%' || ? || '%'
+        OR designation LIKE '%' || ? || '%'
+        OR province LIKE '%' || ? || '%'
+        OR region_1 LIKE '%' || ? || '%'
+        OR region_2 LIKE '%' || ? || '%'
+        OR taster_name LIKE '%' || ? || '%'
+        OR taster_twitter_handle LIKE '%' || ? || '%'
+        OR title LIKE '%' || ? || '%'
+        OR variety LIKE '%' || ? || '%'
+        OR winery LIKE '%' || ? || '%'
+    COLLATE NOCASE
+    LIMIT 500
+  )";
+
+  sqlite3_stmt* statement;
+  int rc = sqlite3_prepare_v2(db, select_sql.c_str(), -1, &statement, nullptr);
+  if (rc != SQLITE_OK) {
+    std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+    return wines;  // Return an empty vector if preparation fails
+  }
+
+  for (int i = 1; i <= 11; ++i) {
+    rc = sqlite3_bind_text(statement, i, parameter.c_str(), -1, SQLITE_STATIC);
+    if (rc != SQLITE_OK) {
+      std::cerr << "Failed to bind parameter: " << sqlite3_errmsg(db) << std::endl;
+      sqlite3_finalize(statement);
+      return wines;  // Return an empty vector if binding fails
+    }
+  }
+
+  while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
+    Wine wine = retrieve_wine_data(statement);
+    wines.push_back(wine);
+  }
+
+  if (rc != SQLITE_DONE) {
+    std::cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << std::endl;
+  }
+
+  sqlite3_finalize(statement);
+
+  return wines;
+}
+
