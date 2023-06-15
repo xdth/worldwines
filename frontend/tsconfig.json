@@ -17,6 +17,6 @@
     "skipLibCheck": true,
     "resolveJsonModule": true
   },
-  "include": ["src", "jest.setup.cjs"],
+  "include": ["src", "jest.setup.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

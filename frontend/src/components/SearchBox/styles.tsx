@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const StyledInput = styled.div`
   position: relative;
   display: inline-block;
+  background: gray;
 `;
 
 export const Input = styled.input`
