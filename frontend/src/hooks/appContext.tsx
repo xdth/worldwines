@@ -17,43 +17,63 @@ interface Wine {
   winery?: string;
 }
 
-interface WineContextData {
+interface AppContextData {
+  isSearchBoxExpanded: boolean;
   wine: Wine;
+  wines: Wine[];
+  handleIsSearchBoxExpanded(value: boolean) : void;
   handleWine(wine: Wine): void;
+  handleWines(wines: Wine[]): void;
 }
 
-interface WineContextProviderProps {
+interface AppContextProviderProps {
   children: React.ReactNode;
 }
 
-const WineContext = createContext<WineContextData>({} as WineContextData);
+const AppContext = createContext<AppContextData>({} as AppContextData);
 
-
-const WineContextProvider: React.FC<WineContextProviderProps> = ({ children }) => {
+const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => {
+  const [isSearchBoxExpanded, setIsSearchBoxExpanded] = useState<boolean>(true);
+  
   const [wine, setWine] = useState<Wine>({} as Wine);
+
+  const [wines, setWines] = useState<Wine[]>({} as Wine[]);
+
+  const handleIsSearchBoxExpanded = useCallback((isSearchBoxExpanded: boolean) => {
+    setIsSearchBoxExpanded(isSearchBoxExpanded);
+  }, []);
 
   const handleWine = useCallback((wine: Wine) => {
     setWine(wine);
   }, []);
 
+  const handleWines = useCallback((wines: Wine[]) => {
+    setWines(wines);
+  }, []);
+
+
   return (
-    <WineContext.Provider value={{ 
+    <AppContext.Provider value={{ 
+      isSearchBoxExpanded,
       wine,
-      handleWine
+      wines,
+      handleIsSearchBoxExpanded,
+      handleWine,
+      handleWines
       }}>
       {children}
-    </WineContext.Provider>
+    </AppContext.Provider>
   );
 };
 
-function useWineContext(): WineContextData {
-  const context = useContext(WineContext);
+function useAppContext(): AppContextData {
+  const context = useContext(AppContext);
 
   if (!context) {
-    throw new Error('useWineContext must be used within an WineContextProvider');
+    throw new Error('useAppContext must be used within an AppContextProvider');
   }
 
   return context;
 }
 
-export { WineContextProvider, useWineContext };
+export { AppContextProvider, useAppContext };
