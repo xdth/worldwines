@@ -8,7 +8,7 @@ const App: React.FC = () => (
   <>
     <GlobalStyle />
     <Navbar />
-    <SearchBox />
+    <SearchBox isExpanded={false}/>
     <Footer />
   </>
 );
