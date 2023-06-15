@@ -1,9 +1,30 @@
 import styled from 'styled-components';
 
+export const StyledInputContainer = styled.div`
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;  
+  background: gray;
+`;
+
+export const StyledInputContainerExpanded = styled(StyledInputContainer)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+`;
+
+export const StyledInputContainerReduced = styled(StyledInputContainer)`
+`;
+
 export const StyledInput = styled.div`
   position: relative;
   display: inline-block;
-  background: gray;
+  background: darkblue;
+  margin: 30px;
+  margin-right: 30px;
 `;
 
 export const Input = styled.input`
@@ -16,8 +37,15 @@ export const Input = styled.input`
   background-color: transparent;
   outline: none;
   padding-right: 30px;
-  width: 200px;
   text-align: center;
+`;
+
+export const InputExpanded = styled(Input)`
+  width: 600px;
+`;
+
+export const InputReduced = styled(Input)`
+  width: 300px;
 `;
 
 export const MagnifyingGlass = styled.svg`
