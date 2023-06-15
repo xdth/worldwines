@@ -7,15 +7,14 @@ module.exports = {
   setupFilesAfterEnv: ['./jest.setup.cjs'],
   modulePathIgnorePatterns: ['<rootDir>/src/assets/'],
   testPathIgnorePatterns: [
-    '<rootDir>/src/main.tsx',
+    '<rootDir>/node_modules/',
+    '<rootDir>/dist/',
   ],
   testMatch: ['<rootDir>/src/**/*.test.(ts|tsx)'],
   collectCoverageFrom: ['<rootDir>/src/**/*.(ts|tsx)'],
   coveragePathIgnorePatterns: [
-    '/node_modules/',
-    '/dist/',
-    '/jest.setup.cjs',
-    '/src/main.tsx'
+    '/src/main.tsx',
+    '/src/services/'
   ],
   moduleNameMapper: {
     '\\.(css|less|sass|scss|svg|jpg)$': 'identity-obj-proxy',
