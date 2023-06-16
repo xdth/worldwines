@@ -7,16 +7,18 @@ export const StyledInputContainer = styled.div`
   display: flex;
   justify-content: flex-end;  
   background: gray;
+  transition: min-height .3s ease-in-out;
 `;
 
 export const StyledInputContainerExpanded = styled(StyledInputContainer)`
-  display: flex;
   justify-content: center;
   align-items: center;
-  height: 50%;
+  /* height: 50%; */
+  min-height: 600px;
 `;
 
 export const StyledInputContainerReduced = styled(StyledInputContainer)`
+  min-height: 70px;
 `;
 
 export const StyledInput = styled.div`
