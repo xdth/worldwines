@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useState, useContext } from 'react';
 
 interface Wine {
-  id: number;
+  id?: number;
   country?: string;
   description?: string;
   designation?: string;

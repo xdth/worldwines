@@ -18,5 +18,4 @@
     "resolveJsonModule": true
   },
   "include": ["src", "jest.setup.cjs"],
-  "references": [{ "path": "./tsconfig.node.json" }]
 }
