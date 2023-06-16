@@ -19,8 +19,6 @@ test('renders SearchBox component', async () => {
   // Toggle the SearchBox to the reduced state
   const container = screen.getByTestId('input-container-expanded');
 
-  container.setPointerCapture = jest.fn(); // Mocking setPointerCapture function
-
   await userEvent.click(container);
 
   // Verify that the state is now reduced

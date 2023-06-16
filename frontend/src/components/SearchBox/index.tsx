@@ -11,26 +11,15 @@ import { AppContextProvider, useAppContext } from '../../hooks/appContext';
 
 const SearchBox: React.FC = () => {
   const { isSearchBoxExpanded, handleIsSearchBoxExpanded } = useAppContext();
-  console.log('isSearchBoxExpanded:', isSearchBoxExpanded);
 
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // useEffect(() => {
-  //   handleIsSearchBoxExpanded(false);
-  // }, []);
 
   const toggleSearchBox = () => {
     handleIsSearchBoxExpanded(!isSearchBoxExpanded);
   };
 
-  const handleContainerClick = (event: React.PointerEvent<HTMLDivElement>) => {
-    event.stopPropagation();
-    containerRef.current?.setPointerCapture(event.pointerId);
+  const handleContainerClick = () => {
     toggleSearchBox();
-  };
-
-  const handleContainerRelease = (event: React.PointerEvent<HTMLDivElement>) => {
-    containerRef.current?.releasePointerCapture(event.pointerId);
   };
 
   const ContainerComponent = isSearchBoxExpanded
@@ -39,13 +28,16 @@ const SearchBox: React.FC = () => {
 
   const InputComponent = isSearchBoxExpanded ? InputExpanded : InputReduced;
 
+  // useEffect(() => {
+  //   handleIsSearchBoxExpanded(false);
+  // }, []);
+
   return (
     <AppContextProvider>
       <ContainerComponent
         ref={containerRef}
         data-testid={isSearchBoxExpanded ? 'input-container-expanded' : 'input-container-reduced'}
-        onPointerDown={handleContainerClick}
-        onPointerUp={handleContainerRelease}
+        onClick={handleContainerClick}
       >
         <StyledInput>
           <InputComponent
