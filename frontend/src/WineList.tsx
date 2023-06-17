@@ -12,10 +12,13 @@ const WineList: React.FC = () => {
     async function loadWines(): Promise<void> {
       if (dataFetchedRef.current) return;
       dataFetchedRef.current = true;
-      
-      const response = await api.get('wines');
 
-      handleWines(response.data);
+      try {
+        const response = await api.get('wines');
+        handleWines(response.data);
+      } catch (err) {
+        console.error("API error:", err);
+      }
     }
 
     loadWines();
