@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
 export const StyledInputContainer = styled.div`
+/* background: gray; */
+
   position: relative;
   display: inline-block;
   width: 100%;
   display: flex;
-  justify-content: flex-end;  
-  background: gray;
+  justify-content: flex-end;
   transition: min-height .3s ease-in-out;
 `;
 
@@ -22,9 +23,10 @@ export const StyledInputContainerReduced = styled(StyledInputContainer)`
 `;
 
 export const StyledInput = styled.div`
+/* background: darkblue; */
+
   position: relative;
   display: inline-block;
-  background: darkblue;
   margin: 30px;
   margin-right: 30px;
 `;

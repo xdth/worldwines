@@ -7,7 +7,7 @@ import {
   InputReduced,
   MagnifyingGlass,
 } from './styles';
-import { AppContextProvider, useAppContext } from '../../hooks/appContext';
+import { useAppContext } from '../../hooks/appContext';
 
 const SearchBox: React.FC = () => {
   const { isSearchBoxExpanded, handleIsSearchBoxExpanded } = useAppContext();
@@ -33,7 +33,7 @@ const SearchBox: React.FC = () => {
   // }, []);
 
   return (
-    <AppContextProvider>
+    <>
       <ContainerComponent
         ref={containerRef}
         data-testid={isSearchBoxExpanded ? 'input-container-expanded' : 'input-container-reduced'}
@@ -50,7 +50,7 @@ const SearchBox: React.FC = () => {
           </MagnifyingGlass>
         </StyledInput>
       </ContainerComponent>
-    </AppContextProvider>
+    </>
   );
 };
 

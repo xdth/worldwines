@@ -33,7 +33,7 @@ interface AppContextProviderProps {
 const AppContext = createContext<AppContextData>({} as AppContextData);
 
 const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => {
-  const [isSearchBoxExpanded, setIsSearchBoxExpanded] = useState<boolean>(true);
+  const [isSearchBoxExpanded, setIsSearchBoxExpanded] = useState<boolean>(false);
   
   const [wine, setWine] = useState<Wine>({} as Wine);
 
