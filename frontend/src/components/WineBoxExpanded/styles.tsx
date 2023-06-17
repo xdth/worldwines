@@ -10,6 +10,7 @@ background-color: rgba(0, 0, 0, 0.6);
     color: white;
     text-decoration: none;
   }
+  
   .wine-details {
 
     p {

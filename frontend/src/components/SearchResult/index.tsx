@@ -14,20 +14,18 @@ const SearchResult: React.FC = () => {
   }
 
   return (
-    <>
-      <Container>
-        <h1>Search results</h1>
-        {Array.isArray(wines) &&
-          wines.map((wine) => (
-            <WineBoxReduced wine={wine} key={wine.id} />
-          ))}
+    <Container>
+      <h1>Search results</h1>
+      {Array.isArray(wines) &&
+        wines.map((wine) => (
+          <WineBoxReduced wine={wine} key={wine.id} />
+        ))}
 
-        {/* {Array.isArray(wines) &&
-          wines.map((wine) => (
-            <WineBoxExpanded wine={wine} key={wine.id} />
-          ))}           */}
-      </Container>
-    </>
+      {/* {Array.isArray(wines) &&
+        wines.map((wine) => (
+          <WineBoxExpanded wine={wine} key={wine.id} />
+        ))}           */}
+    </Container>
   );
 };
 
