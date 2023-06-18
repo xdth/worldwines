@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAppContext } from '../../hooks/appContext';
 import { Container } from './styles';
-import WineBoxReduced from '../WineBoxReduced';
+import WineBoxReduced from '../../components/WineBoxReduced';
 // import WineBoxExpanded from '../WineBoxExpanded';
 
 const SearchResult: React.FC = () => {

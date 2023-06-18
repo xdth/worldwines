@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Logo, Menu, MenuItem } from './styles';
+import { Link } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
   return (
@@ -7,10 +8,11 @@ const Navbar: React.FC = () => {
       <Container>
         <Logo>worldwines.app</Logo>
         <Menu>
-          <MenuItem>Wines</MenuItem>
-          <MenuItem>Countries</MenuItem>
-          <MenuItem>Varieties</MenuItem>
-          <MenuItem>Wineries</MenuItem>
+          <MenuItem><Link to="/">Home</Link></MenuItem>
+          <MenuItem><Link to="/wines">Wines</Link></MenuItem>
+          <MenuItem><Link to="/countries">Countries</Link></MenuItem>
+          <MenuItem><Link to="/varieties">Varieties</Link></MenuItem>
+          <MenuItem><Link to="/wineries">Wineries</Link></MenuItem>
         </Menu>
       </Container>
     </>
