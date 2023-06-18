@@ -1,11 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { useAppContext } from '../../hooks/appContext';
 import api from "../../services/api";
+import WineBoxReduced from '../../components/WineBoxReduced';
 import { Container } from './styles';
 
 const Wines: React.FC = () => {
   
-  const { handleWines } = useAppContext();
+  const { isSearchBoxExpanded, wines, handleWines } = useAppContext();
   const dataFetchedRef = useRef(false);
 
   useEffect(() => {
@@ -24,18 +25,19 @@ const Wines: React.FC = () => {
     loadWines();
   }, []);
 
-  // if(isSearchBoxExpanded) return null;
+  if(isSearchBoxExpanded) return null;
 
-  // if (!Array.isArray(wines)) {
-  //   return <div>Loading...</div>;
-  // }
-
-  // const isActive = location.pathname === '/wines';
-  const isActive = '/wines';
+  if (!Array.isArray(wines)) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <Container className={isActive ? 'active' : ''}>
-      Wines
+    <Container>
+    <h1>Search results</h1>
+    {Array.isArray(wines) &&
+      wines.map((wine) => (
+        <WineBoxReduced wine={wine} key={wine.id} />
+      ))}
     </Container>
   );
 };

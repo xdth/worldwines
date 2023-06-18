@@ -12,8 +12,4 @@ export const Container = styled.div`
     font-size: 20px;
     border-bottom: 1px solid white;
   }
-
-  a.active {
-    color: red;
-  }
 `;
