@@ -1,22 +1,36 @@
 import React from 'react';
 import { Container, Logo, Menu, MenuItem } from './styles';
-import { Link } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
+  const location = useLocation();
+
+  const isActive = (path: string): boolean => {
+    return location.pathname === path;
+  };
+
   return (
-    <>
-      <Container>
-        <Logo>worldwines.app</Logo>
-        <Menu>
-          <MenuItem><Link to="/">Home</Link></MenuItem>
-          <MenuItem><Link to="/wines">Wines</Link></MenuItem>
-          <MenuItem><Link to="/countries">Countries</Link></MenuItem>
-          <MenuItem><Link to="/varieties">Varieties</Link></MenuItem>
-          <MenuItem><Link to="/wineries">Wineries</Link></MenuItem>
-        </Menu>
-      </Container>
-    </>
+    <Container>
+      <Logo>worldwines.app</Logo>
+      <Menu>
+        <MenuItem>
+          <NavLink to="/" end className={`nav-link ${isActive('/') && 'active'}`}>Home</NavLink>
+        </MenuItem>
+        <MenuItem>
+          <NavLink to="/wines" className={`nav-link ${isActive('/wines') && 'active'}`}>Wines</NavLink>
+        </MenuItem>
+        <MenuItem>
+          <NavLink to="/countries" className={`nav-link ${isActive('/countries') && 'active'}`}>Countries</NavLink>
+        </MenuItem>
+        <MenuItem>
+          <NavLink to="/varieties" className={`nav-link ${isActive('/varieties') && 'active'}`}>Varieties</NavLink>
+        </MenuItem>
+        <MenuItem>
+          <NavLink to="/wineries" className={`nav-link ${isActive('/wineries') && 'active'}`}>Wineries</NavLink>
+        </MenuItem>
+      </Menu>
+    </Container>
   );
-}
+};
 
 export default Navbar;

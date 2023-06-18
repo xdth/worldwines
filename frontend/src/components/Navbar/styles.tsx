@@ -48,7 +48,7 @@ export const MenuItem = styled.div`
   margin-right: 30px;
   font-size: 1em;
 
-  a {
+  .nav-link {
     color: white;
     text-align: center;
     text-decoration: none;
@@ -58,24 +58,29 @@ export const MenuItem = styled.div`
     text-decoration: none;
     border-bottom: 2px solid transparent;
     transition: border-bottom-width 0.3s ease-out;
-    overflow: hidden; /* Add overflow hidden to clip the border initially */
+    overflow: hidden;
+    font-weight: normal;
   }
 
-  a::before {
+  .nav-link.active {
+    border-bottom: 2px solid white;
+  }
+
+  .nav-link::before {
     content: "";
     position: absolute;
     bottom: 0;
-    left: 100%; /* Set the initial position to the right */
+    left: 100%;
     width: 100%;
     height: 2px;
     background-color: white;
-    transition: left 0.3s ease-out; /* Transition the left position */
+    transition: left 0.3s ease-out;
     z-index: -1;
   }
 
-  a:hover::before {
-    left: 0; /* Move the border to the left */
-  }
+  .nav-link:hover::before {
+    left: 0;
+  } 
 
   @media (max-width: 480px) {
     margin-right: 0;
