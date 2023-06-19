@@ -67,10 +67,8 @@ bool is_db_table_empty(const std::string& db_table_name) {
 // Create the database and tables if the DB doesn't exist
 int db_init(const std::string& db_name, const std::string& db_table_name, const std::string& seeding_dataset = "") {
   
-  // Open the database
   rc = db_open(db_name);
 
-  // DB opened, if db table is empty
   if (is_db_table_empty(db_table_name)) {
 
     // The SQL query raw literal
@@ -102,7 +100,6 @@ int db_init(const std::string& db_name, const std::string& db_table_name, const 
 
     std::cout << "*** Table "  << db_table_name << " created." << std::endl;
 
-    // seed db
     db_seed(seeding_dataset, db_table_name);
 
     return 0;
@@ -368,7 +365,6 @@ std::vector<Wine> db_list500() { // todo: choose a better name
   }
   
   while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
-    // Retrieve wine data from the statement
     Wine wine = retrieve_wine_data(statement);
     wines.push_back(wine);
   }
@@ -429,7 +425,6 @@ std::vector<std::string> db_handle_request_string(std::string select_sql) {
   }
 
   while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
-    // Retrieve the data from the statement
     const unsigned char* value = sqlite3_column_text(statement, 0);
     if (value != nullptr) {
       result.push_back(reinterpret_cast<const char*>(value));
@@ -542,33 +537,6 @@ std::vector<Wine> db_list_by_winery(const std::string& parameter) {
   return wines;
 }
 
-
-// Retrieve wines containing a given string
-// Search on country,description,designation,province,region_1,region_2,taster_name,taster_twitter_handle,title,variety,winery
-// std::vector<Wine> db_search(const std::string& parameter) {
-//   std::vector<Wine> wines;
-//   // std::string select_sql = "SELECT * FROM wines WHERE country=? COLLATE NOCASE LIMIT 500";
-//   std::string select_sql = R"(
-//     SELECT DISTINCT *
-//     FROM wines
-//     WHERE 
-//         country LIKE '%?%'
-//         OR description LIKE '%?%'
-//         OR designation LIKE '%?%'
-//         OR province LIKE '%?%'
-//         OR region_1 LIKE '%?%'
-//         OR region_2 LIKE '%?%'
-//         OR taster_name LIKE '%?%'
-//         OR taster_twitter_handle LIKE '%?%'
-//         OR title LIKE '%?%'
-//         OR variety LIKE '%?%'
-//         OR winery LIKE '%?%'
-//   )";
-
-//   wines = db_handle_request_structs(select_sql, parameter);
-
-//   return wines;
-// }
 
 std::vector<Wine> db_search(const std::string& parameter) {
   std::vector<Wine> wines;

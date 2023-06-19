@@ -88,20 +88,17 @@ void api_list_by_id(const http_request& request) {
     return;
   }
 
-  Wine wine = db_list_by_id(wine_id); // Call db_list_by_id with wine_id and populate the wine object
+  Wine wine = db_list_by_id(wine_id);
 
   json::value wine_json = api_return_json(wine);
 
-  // Send the JSON response
   api_send_response_ok(wine_json, request);
 }
 
 
 void api_list500(const http_request& request) {
-  // Call the function in database.cpp to fetch the first 500 wines
   std::vector<Wine> wines = db_list500();
   
-  // Convert the vector of wines to a JSON array
   json::value wines_array = json::value::array();
   
   for (const auto& wine : wines) {
@@ -109,7 +106,6 @@ void api_list500(const http_request& request) {
     wines_array[size_t(wines_array.size())] = wine_json;
   }
 
-  // Send the JSON response
   api_send_response_ok(wines_array, request);
 }
 
@@ -117,16 +113,12 @@ void api_list500(const http_request& request) {
 void api_list_countries(const http_request& request) {
   std::vector<std::string> values = db_list_countries();
   
-  // Convert the vector of values to a JSON array
   json::value values_array = json::value::array();
-  
+
   for (const auto& value : values) {
-    json::value value_json;
-    value_json[U("value")] = json::value::string(value);
-    values_array[size_t(values_array.size())] = value_json;
+    values_array[size_t(values_array.size())] = json::value::string(value);
   }
 
-  // Send the JSON response
   api_send_response_ok(values_array, request);
 }
 
@@ -147,14 +139,13 @@ void api_list_by_country(const http_request& request) {
   std::transform(parameter.begin(), parameter.end(), parameter.begin(), ::tolower);
 
   // Check if the parameter is empty or contains invalid characters
-  const std::string valid_characters = "abcdefghijklmnopqrstuvwxyz ";
+  const std::string valid_characters = "abcdefghijklmnopqrstuvwxyz "; //@todo: this has to change
   if (parameter.empty() || parameter.find_first_not_of(valid_characters) != std::string::npos) {
     // Invalid parameter, send an error response
     api_send_response_not_ok("Invalid country", request);
     return;
   }
 
-  // Fetch wines by parameter from the DB
   std::vector<Wine> wines = db_list_by_country(parameter);
 
   json::value wines_array = json::value::array();
@@ -164,7 +155,6 @@ void api_list_by_country(const http_request& request) {
     wines_array[size_t(wines_array.size())] = wine_json;
   }
 
-  // Send the JSON response
   api_send_response_ok(wines_array, request);
 }
 
@@ -172,7 +162,6 @@ void api_list_by_country(const http_request& request) {
 void api_list_varieties(const http_request& request) {
   std::vector<std::string> values = db_list_varieties();
   
-  // Convert the vector of values to a JSON array
   json::value values_array = json::value::array();
   
   for (const auto& value : values) {
@@ -181,7 +170,6 @@ void api_list_varieties(const http_request& request) {
     values_array[size_t(values_array.size())] = value_json;
   }
 
-  // Send the JSON response
   api_send_response_ok(values_array, request);
 }
 
@@ -208,7 +196,6 @@ void api_list_by_variety(const http_request& request) {
     api_send_response_not_ok("Invalid variety", request);
   }
 
-  // Fetch wines by parameter from the DB
   std::vector<Wine> wines = db_list_by_variety(parameter);
 
   json::value wines_array = json::value::array();
@@ -218,7 +205,6 @@ void api_list_by_variety(const http_request& request) {
     wines_array[size_t(wines_array.size())] = wine_json;
   }
 
-  // Send the JSON response
   api_send_response_ok(wines_array, request);
 }
 
@@ -226,7 +212,6 @@ void api_list_by_variety(const http_request& request) {
 void api_list_wineries(const http_request& request) {
   std::vector<std::string> values = db_list_wineries();
   
-  // Convert the vector of values to a JSON array
   json::value values_array = json::value::array();
   
   for (const auto& value : values) {
@@ -235,7 +220,6 @@ void api_list_wineries(const http_request& request) {
     values_array[size_t(values_array.size())] = value_json;
   }
 
-  // Send the JSON response
   api_send_response_ok(values_array, request);
 }
 
@@ -263,7 +247,6 @@ void api_list_by_winery(const http_request& request) {
     return;
   }
 
-  // Fetch wines by parameter from the DB
   std::vector<Wine> wines = db_list_by_winery(parameter);
 
   json::value wines_array = json::value::array();
@@ -273,7 +256,6 @@ void api_list_by_winery(const http_request& request) {
     wines_array[size_t(wines_array.size())] = wine_json;
   }
 
-  // Send the JSON response
   api_send_response_ok(wines_array, request);
 }
 
@@ -303,7 +285,6 @@ void api_search(const http_request& request) {
     return;
   }
 
-  // Fetch wines by parameter from the DB
   std::vector<Wine> wines = db_search(parameter);
 
   json::value wines_array = json::value::array();
@@ -313,12 +294,8 @@ void api_search(const http_request& request) {
     wines_array[size_t(wines_array.size())] = wine_json;
   }
 
-  // Send the JSON response
   api_send_response_ok(wines_array, request);
 }
-
-
-
 
 
 int api_start() {
