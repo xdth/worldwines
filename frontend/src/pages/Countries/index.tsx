@@ -1,12 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAppContext } from '../../hooks/appContext';
 import api from "../../services/api";
-import WineBoxExpanded from '../../components/WineBoxExpanded';
-import { Container } from './styles';
+import { Container, Country } from './styles';
 
 const Countries: React.FC = () => {
-  
-  const { isSearchBoxExpanded, wines, handleWines } = useAppContext();
+  const { handleWines } = useAppContext();
+
+  const [winesArray, setWinesArray] = useState<string[]>([]);
   const dataFetchedRef = useRef(false);
 
   useEffect(() => {
@@ -17,6 +17,7 @@ const Countries: React.FC = () => {
       try {
         const response = await api.get('countries');
         handleWines(response.data);
+        setWinesArray(response.data as string[]);
       } catch (err) {
         console.error("API error:", err);
       }
@@ -25,18 +26,15 @@ const Countries: React.FC = () => {
     loadWines();
   }, []);
 
-  if(isSearchBoxExpanded) return null;
-
-  if (!Array.isArray(wines)) {
+  if (winesArray.length === 0) {
     return <div>Loading...</div>;
   }
 
   return (
     <Container>
-    <h1>Search results</h1>
-    {Array.isArray(wines) &&
-      wines.map((wine) => (
-        <WineBoxExpanded wine={wine} key={wine.id} />
+      <h1>Countries</h1>
+      {winesArray.map((wine) => (
+        <Country key={wine}>{wine}</Country>
       ))}
     </Container>
   );

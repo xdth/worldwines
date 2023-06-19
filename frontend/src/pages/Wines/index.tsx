@@ -33,10 +33,10 @@ const Wines: React.FC = () => {
 
   return (
     <Container>
-    <h1>Search results</h1>
+    <h1>Wines</h1>
     {Array.isArray(wines) &&
-      wines.map((wine) => (
-        <WineBoxReduced wine={wine} key={wine.id} />
+      wines.map((wine, index) => (
+        <WineBoxReduced wine={wine} key={index} />
       ))}
     </Container>
   );
