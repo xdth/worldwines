@@ -6,7 +6,8 @@ export const Container = styled.div`
   align-items: center;
   align-items: center;
   flex-direction: row;
-  color: #F1F1F1;
+  color: var(--white);
+  /* background-color: rgba(0, 0, 0, 0.6); */
   padding: 30px;
   
   @media (max-width: 480px) {
@@ -49,7 +50,7 @@ export const MenuItem = styled.div`
   font-size: 1em;
 
   .nav-link {
-    color: white;
+    color: var(--purple);
     text-align: center;
     text-decoration: none;
     position: relative;
@@ -63,7 +64,7 @@ export const MenuItem = styled.div`
   }
 
   .nav-link.active {
-    border-bottom: 2px solid white;
+    border-bottom: 2px solid var(--purple);
   }
 
   .nav-link::before {
@@ -73,7 +74,7 @@ export const MenuItem = styled.div`
     left: 100%;
     width: 100%;
     height: 2px;
-    background-color: white;
+    background-color: var(--purple);
     transition: left 0.3s ease-out;
     z-index: -1;
   }

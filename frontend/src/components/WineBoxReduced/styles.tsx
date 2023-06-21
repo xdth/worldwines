@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 
 export const WineBoxReducedContainer = styled.div`
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid white;
+
   margin: 30px;
   padding: 20px;
 
