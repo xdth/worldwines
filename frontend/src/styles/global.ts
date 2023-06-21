@@ -1,9 +1,11 @@
 import { createGlobalStyle } from 'styled-components';
 // import BackgroundImage from '../assets/background_2400_1599.jpg';
-import BackgroundImage from '../assets/background.jpg';
-// import BackgroundImage from '../assets/background2.jpg';
+
 // import BackgroundImage from '../assets/background3.jpg';
-// import BackgroundImage from '../assets/background4.jpg';
+// import BackgroundImage from '../assets/background.jpg';
+
+// import BackgroundImage from '../assets/background2.jpg';
+import BackgroundImage from '../assets/background4.jpg';
 // import BackgroundImage from '../assets/background5.jpg';
 // import BackgroundImage from '../assets/background6.jpg';
 
@@ -52,5 +54,12 @@ color: #ad12a0;
     -o-background-size: cover;
     background-size: cover;
     color: white;
+  }
+
+  h1 {
+    // background-color: rgba(0, 0, 0, 0.6);
+    padding: 20px 10px;
+    text-align: left;
+    margin-left: 30px;
   }
 `;
