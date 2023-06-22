@@ -36,8 +36,8 @@ export const Input = styled.input`
   border-top: none;
   border-left: none;
   border-right: none;
-  border-bottom: 1px solid white;
-  color: white;
+  border-bottom: 1px solid var(--white);
+  color: var(--white);
   background-color: transparent;
   outline: none;
   padding-right: 30px;
@@ -57,5 +57,5 @@ export const MagnifyingGlass = styled.svg`
   top: 50%;
   right: 5px;
   transform: translateY(-50%);
-  fill: white;
+  fill: var(--white);
 `;

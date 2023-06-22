@@ -1,14 +1,17 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  /* background: gray; */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  align-items: center;
-  flex-direction: row;
   color: var(--white);
-  /* background-color: rgba(0, 0, 0, 0.6); */
-  padding: 30px;
+  padding: 0 10%;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  width: 80%;
+  margin: auto;
+  min-height: 70px;
   
   @media (max-width: 480px) {
     flex-direction: column;

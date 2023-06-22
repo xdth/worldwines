@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const WineBoxExpandedContainer = styled.div`
 
-background-color: rgba(0, 0, 0, 0.6);
+background-color: var(--background);
   margin: 30px;
   padding: 20px;
 

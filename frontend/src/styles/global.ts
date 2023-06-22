@@ -1,13 +1,13 @@
 import { createGlobalStyle } from 'styled-components';
 // import BackgroundImage from '../assets/background_2400_1599.jpg';
 
-// import BackgroundImage from '../assets/background3.jpg';
+import BackgroundImage from '../assets/background3.jpg';
+// import BackgroundImage from '../assets/background6.jpg';
 // import BackgroundImage from '../assets/background.jpg';
+// import BackgroundImage from '../assets/background5.jpg';
 
 // import BackgroundImage from '../assets/background2.jpg';
-import BackgroundImage from '../assets/background4.jpg';
-// import BackgroundImage from '../assets/background5.jpg';
-// import BackgroundImage from '../assets/background6.jpg';
+// import BackgroundImage from '../assets/background4.jpg';
 
 export default createGlobalStyle`
 
@@ -15,15 +15,9 @@ export default createGlobalStyle`
 color: #ad12a0;
   :root {
     --purple: #A569BD;
-    --white: #f4ebf5;
-    --background: #F0F2F5;
-    --green: #33cc95;
-    --blue: #5429CC;
-    --blue-light: #6933FF;
-    --text-title: #363F5F;
-    --text-body: #969CB3;
-    --background: #F8F2F5;
-    --shape: #FFF;
+    /* --white: #f4ebf5; */
+    --white: #FFFFFF;
+    --background: rgba(0, 0, 0, 0.4);
   }
 
   * {
@@ -57,9 +51,10 @@ color: #ad12a0;
   }
 
   h1 {
-    // background-color: rgba(0, 0, 0, 0.6);
-    padding: 20px 10px;
-    text-align: left;
-    margin-left: 30px;
+    // background-color: var(--background);
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2em;
+    color: var(--white);
   }
 `;

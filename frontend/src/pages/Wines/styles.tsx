@@ -1,10 +1,15 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  margin: 0 30px 0 30px;
-
-  h2 {
-    font-size: 20px;
-    border-bottom: 1px solid white;
+  /* background: gray; */
+  width: 50%;
+  min-width: 700px;
+  margin: auto;
+  /* margin: 0 30px 0 30px; */
+  /* display: flex;
+  flex-direction: column;
+  justify-content: space-evenly; */
+  
+  h1 {
   }
 `;

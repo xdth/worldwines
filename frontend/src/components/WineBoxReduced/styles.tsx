@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
 export const WineBoxReducedContainer = styled.div`
-  background-color: rgba(0, 0, 0, 0.2);
-  border: 1px solid white;
-
-  margin: 30px;
+  background-color: var(--background);
+  /* border: 1px solid var(--white); */
+  margin: auto;
+  margin-bottom: 20px;
+  width: 90%;
+  max-width: 1000px;
   padding: 20px;
-
   transition: transform 0.2s;
   
   &:hover {
@@ -15,12 +16,12 @@ export const WineBoxReducedContainer = styled.div`
   
   h2 {
     font-size: 20px;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid var(--white);
     grid-column: 1 / span 2; /* Span across two columns */
   }
 
   a {
-    color: white;
+    color: var(--white);
     text-decoration: none;
   }
   .wine-details {
