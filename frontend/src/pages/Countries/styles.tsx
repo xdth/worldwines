@@ -1,34 +1,36 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  margin: 0 30px 0 30px;
-  background-color: var(--background);
+  width: 50%;
+  min-width: 700px;
+  margin: auto;
 
-  /* h1 {
-    background-color: var(--background);
-    padding: 20px 10px;
-    text-align: center;
+  @media (max-width: 480px) {
+    width: 90%;
+    min-width: 400px;
+    margin: auto;
   }
-
-  h2 {
-    font-size: 20px;
-    border-bottom: 1px solid white;
-  } */
 `;
 
-
 export const Country = styled.a`
-  display: block;
-  margin: 0 30px 0 30px;
-  color: white;
-  h1 {
-    background-color: var(--background);
-    padding: 20px 10px;
-    text-align: center;
+  background-color: var(--background);
+  margin: auto;
+  margin-bottom: 20px;
+  width: 90%;
+  max-width: 1000px;
+  padding: 20px;
+  transition: transform 0.2s;
+  color: var(--white);
+  text-decoration: none;
+  display: inline-block;
+
+  &:hover {
+    transform: translateX(10px);
+    color: var(--purple);
   }
 
-  h2 {
-    font-size: 20px;
-    border-bottom: 1px solid white;
+  @media (max-width: 480px) {
+    width: 90%;
+    margin: 10px auto;
   }
 `;

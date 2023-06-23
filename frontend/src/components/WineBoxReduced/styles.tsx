@@ -16,13 +16,17 @@ export const WineBoxReducedContainer = styled.div`
   
   h2 {
     font-size: 20px;
-    border-bottom: 1px solid var(--white);
+    border-bottom: 2px solid var(--purple);
     grid-column: 1 / span 2; /* Span across two columns */
   }
 
   a {
     color: var(--white);
     text-decoration: none;
+
+    /* &:hover {
+      color: var(--purple);
+    } */
   }
   .wine-details {
     display: grid;
@@ -41,9 +45,16 @@ export const WineBoxReducedContainer = styled.div`
 
   .read-more {
     font-size: 0.8em;
+    /* color: var(--purple); */
   }
 
   p:last-child {
     grid-column: 1 / span 2; /* Span across two columns */
+  }
+
+
+  @media (max-width: 480px) {
+    width: 90%;
+    margin: 10px auto;
   }
 `;

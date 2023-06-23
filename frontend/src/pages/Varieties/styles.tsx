@@ -1,15 +1,36 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  margin: 0 30px 0 30px;
-  h1 {
-    background-color: var(--background);
-    padding: 20px 10px;
-    text-align: center;
+  width: 50%;
+  min-width: 700px;
+  margin: auto;
+
+  @media (max-width: 480px) {
+    width: 90%;
+    min-width: 400px;
+    margin: auto;
+  }
+`;
+
+export const Variety = styled.a`
+  background-color: var(--background);
+  margin: auto;
+  margin-bottom: 20px;
+  width: 90%;
+  max-width: 1000px;
+  padding: 20px;
+  transition: transform 0.2s;
+  color: var(--white);
+  text-decoration: none;
+  display: inline-block;
+
+  &:hover {
+    transform: translateX(10px);
+    color: var(--purple);
   }
 
-  h2 {
-    font-size: 20px;
-    border-bottom: 1px solid white;
+  @media (max-width: 480px) {
+    width: 90%;
+    margin: 10px auto;
   }
 `;

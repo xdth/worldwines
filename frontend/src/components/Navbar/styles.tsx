@@ -6,18 +6,20 @@ export const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   color: var(--white);
-  padding: 0 10%;
+  /* padding: 0 10%;
   padding-top: 30px;
-  padding-bottom: 30px;
-  width: 80%;
+  padding-bottom: 30px; */
+  padding: 30px 0%;
+  width: 80vw;
   margin: auto;
-  min-height: 70px;
+  /* min-height: 70px; */
   
-  @media (max-width: 480px) {
+  @media (max-width: 890px) {
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     padding: 15px;
     min-height: 0;
+    width: 100vw;
   }
 `;
 
@@ -27,11 +29,13 @@ export const Logo = styled.div`
   flex-direction: row;
   align-items: center;
   font-size: 2em;
+
+  span {
+    color: var(--purple);
+  }
   
-  @media (max-width: 480px) {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  @media (max-width: 890px) {
+    margin-bottom: 20px;
   }
 `;
 

@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 
 export const StyledInputContainer = styled.div`
-/* background: gray; */
+  /* background: #362323; */
 
   position: relative;
   display: inline-block;
-  width: 100%;
+  width: 80%;
+  margin: auto;
   display: flex;
   justify-content: flex-end;
   transition: min-height .3s ease-in-out;
@@ -19,7 +20,7 @@ export const StyledInputContainerExpanded = styled(StyledInputContainer)`
 `;
 
 export const StyledInputContainerReduced = styled(StyledInputContainer)`
-  min-height: 70px;
+  /* min-height: 70px; */
 `;
 
 export const StyledInput = styled.div`
@@ -27,8 +28,13 @@ export const StyledInput = styled.div`
 
   position: relative;
   display: inline-block;
-  margin: 30px;
+  /* margin: 30px; */
   margin-right: 30px;
+
+
+  @media (max-width: 480px) {
+    margin-right: 0;
+  }
 `;
 
 export const Input = styled.input`
