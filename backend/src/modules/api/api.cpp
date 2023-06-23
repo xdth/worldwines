@@ -213,9 +213,7 @@ void api_list_wineries(const http_request& request) {
   json::value values_array = json::value::array();
   
   for (const auto& value : values) {
-    json::value value_json;
-    value_json[U("value")] = json::value::string(value);
-    values_array[size_t(values_array.size())] = value_json;
+    values_array[size_t(values_array.size())] = json::value::string(value);
   }
 
   api_send_response_ok(values_array, request);
