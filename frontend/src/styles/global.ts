@@ -1,7 +1,25 @@
 import { createGlobalStyle } from 'styled-components';
-import BackgroundImage from '../assets/background_2400_1599.jpg';
+// import BackgroundImage from '../assets/background_2400_1599.jpg';
+
+import BackgroundImage from '../assets/background3.jpg';
+// import BackgroundImage from '../assets/background6.jpg';
+// import BackgroundImage from '../assets/background.jpg';
+// import BackgroundImage from '../assets/background5.jpg';
+
+// import BackgroundImage from '../assets/background2.jpg';
+// import BackgroundImage from '../assets/background4.jpg';
 
 export default createGlobalStyle`
+
+
+color: #ad12a0;
+  :root {
+    --purple: #800080;
+    /* --white: #f4ebf5; */
+    --white: #FFFFFF;
+    --background: rgba(0, 0, 0, 0.3);
+  }
+
   * {
     margin: 0;
     padding: 0;
@@ -24,11 +42,25 @@ export default createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
-    background: url(${BackgroundImage}) no-repeat center center fixed; 
+    background: url(${BackgroundImage}) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
     color: white;
+  }
+
+  h1 {
+    // background-color: var(--background);
+    text-align: left;
+    margin: 60px;
+    font-size: 2em;
+    color: var(--white);
+
+    @media (max-width: 480px) {
+      width: 90%;
+      margin: 10px auto;
+      padding: 20px;
+    }
   }
 `;

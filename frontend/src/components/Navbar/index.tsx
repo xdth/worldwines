@@ -11,7 +11,7 @@ const Navbar: React.FC = () => {
 
   return (
     <Container>
-      <Logo>worldwines.app</Logo>
+      <Logo>world<span>wines</span>.app</Logo>
       <Menu>
         <MenuItem>
           <NavLink to="/" end className={`nav-link ${isActive('/') && 'active'}`}>Home</NavLink>

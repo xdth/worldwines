@@ -1,15 +1,13 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  margin: 0 30px 0 30px;
-  h1 {
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 20px 10px;
-    text-align: center;
-  }
+  width: 50%;
+  min-width: 700px;
+  margin: auto;
 
-  h2 {
-    font-size: 20px;
-    border-bottom: 1px solid white;
+  @media (max-width: 480px) {
+    width: 90%;
+    min-width: 400px;
+    margin: auto;
   }
 `;

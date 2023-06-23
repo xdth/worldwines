@@ -1,19 +1,25 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  /* background: gray; */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  align-items: center;
-  flex-direction: row;
-  color: #F1F1F1;
-  padding: 30px;
+  color: var(--white);
+  /* padding: 0 10%;
+  padding-top: 30px;
+  padding-bottom: 30px; */
+  padding: 30px 0%;
+  width: 80vw;
+  margin: auto;
+  /* min-height: 70px; */
   
-  @media (max-width: 480px) {
+  @media (max-width: 890px) {
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     padding: 15px;
     min-height: 0;
+    width: 100vw;
   }
 `;
 
@@ -23,11 +29,13 @@ export const Logo = styled.div`
   flex-direction: row;
   align-items: center;
   font-size: 2em;
+
+  span {
+    color: var(--purple);
+  }
   
-  @media (max-width: 480px) {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  @media (max-width: 890px) {
+    margin-bottom: 20px;
   }
 `;
 
@@ -49,7 +57,7 @@ export const MenuItem = styled.div`
   font-size: 1em;
 
   .nav-link {
-    color: white;
+    color: var(--purple);
     text-align: center;
     text-decoration: none;
     position: relative;
@@ -63,7 +71,7 @@ export const MenuItem = styled.div`
   }
 
   .nav-link.active {
-    border-bottom: 2px solid white;
+    border-bottom: 2px solid var(--purple);
   }
 
   .nav-link::before {
@@ -73,7 +81,7 @@ export const MenuItem = styled.div`
     left: 100%;
     width: 100%;
     height: 2px;
-    background-color: white;
+    background-color: var(--purple);
     transition: left 0.3s ease-out;
     z-index: -1;
   }
