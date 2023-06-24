@@ -109,6 +109,20 @@ void api_list500(const http_request& request) {
   api_send_response_ok(wines_array, request);
 }
 
+// Helper function to decode the space
+std::string api_html_decode(const std::string& parameter) {
+  std::string result = parameter;
+  std::string searchString = "%20";
+  std::string replaceString = " ";
+
+  size_t pos = 0;
+  while ((pos = result.find(searchString, pos)) != std::string::npos) {
+    result.replace(pos, searchString.length(), replaceString);
+    pos += replaceString.length();
+  }
+
+  return result;
+}
 
 void api_list_countries(const http_request& request) {
   std::vector<std::string> values = db_list_countries();
@@ -131,15 +145,16 @@ void api_list_by_country(const http_request& request) {
   parameter = parameter.substr(std::string("/country/").length());
 
   // Trim leading and trailing whitespace from the parameter name
-  parameter = std::regex_replace(parameter, std::regex("^\\s+"), "");
-  parameter = std::regex_replace(parameter, std::regex("\\s+$"), "");
+  parameter = std::regex_replace(parameter, std::regex("^\\s+|\\s+$"), "");
 
   // @todo: move validation stuff to a new function?
   // Convert the parameter to lowercase for case-insensitive comparison
   std::transform(parameter.begin(), parameter.end(), parameter.begin(), ::tolower);
 
+  parameter = api_html_decode(parameter);
+
   // Check if the parameter is empty or contains invalid characters
-  const std::string valid_characters = "abcdefghijklmnopqrstuvwxyz "; //@todo: this has to change
+  const std::string valid_characters = "abcdefghijklmnopqrstuvwxyz ";
   if (parameter.empty() || parameter.find_first_not_of(valid_characters) != std::string::npos) {
     // Invalid parameter, send an error response
     api_send_response_not_ok("Invalid country", request);
@@ -180,12 +195,13 @@ void api_list_by_variety(const http_request& request) {
   parameter = parameter.substr(std::string("/variety/").length());
 
   // Trim leading and trailing whitespace from the parameter name
-  parameter = std::regex_replace(parameter, std::regex("^\\s+"), "");
-  parameter = std::regex_replace(parameter, std::regex("\\s+$"), "");
+  parameter = std::regex_replace(parameter, std::regex("^\\s+|\\s+$"), "");
 
   // @todo: move validation stuff to a new function?
   // Convert the parameter to lowercase for case-insensitive comparison
   std::transform(parameter.begin(), parameter.end(), parameter.begin(), ::tolower);
+
+  parameter = api_html_decode(parameter);
 
   // Check if the parameter is empty or contains invalid characters
   const std::string valid_characters = "abcdefghijklmnopqrstuvwxyz ";
@@ -228,15 +244,16 @@ void api_list_by_winery(const http_request& request) {
   parameter = parameter.substr(std::string("/winery/").length());
 
   // Trim leading and trailing whitespace from the parameter name
-  parameter = std::regex_replace(parameter, std::regex("^\\s+"), "");
-  parameter = std::regex_replace(parameter, std::regex("\\s+$"), "");
+  parameter = std::regex_replace(parameter, std::regex("^\\s+|\\s+$"), "");
 
   // @todo: move validation stuff to a new function?
   // Convert the parameter to lowercase for case-insensitive comparison
   std::transform(parameter.begin(), parameter.end(), parameter.begin(), ::tolower);
 
+  parameter = api_html_decode(parameter);
+
   // Check if the parameter is empty or contains invalid characters
-  const std::string valid_characters = "abcdefghijklmnopqrstuvwxyz ";
+  const std::string valid_characters = "abcdefghijklmnopqrstuvwxyz0123456789+= ";
   if (parameter.empty() || parameter.find_first_not_of(valid_characters) != std::string::npos) {
     // Invalid parameter, send an error response
     api_send_response_not_ok("Invalid winery", request);
@@ -266,15 +283,16 @@ void api_search(const http_request& request) {
   parameter = parameter.substr(std::string("/search/").length());
 
   // Trim leading and trailing whitespace from the parameter name
-  parameter = std::regex_replace(parameter, std::regex("^\\s+"), "");
-  parameter = std::regex_replace(parameter, std::regex("\\s+$"), "");
+  parameter = std::regex_replace(parameter, std::regex("^\\s+|\\s+$"), "");
 
   // @todo: move validation stuff to a new function?
   // Convert the parameter to lowercase for case-insensitive comparison
   std::transform(parameter.begin(), parameter.end(), parameter.begin(), ::tolower);
 
+  parameter = api_html_decode(parameter);
+
   // Check if the parameter is empty or contains invalid characters
-  const std::string valid_characters = "abcdefghijklmnopqrstuvwxyz ";
+  const std::string valid_characters = "abcdefghijklmnopqrstuvwxyz0123456789+= ";
   if (parameter.empty() || parameter.find_first_not_of(valid_characters) != std::string::npos) {
     // Invalid parameter, send an error response
     api_send_response_not_ok("Invalid search", request);
