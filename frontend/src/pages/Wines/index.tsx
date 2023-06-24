@@ -22,7 +22,9 @@ const Wines: React.FC = () => {
       }
     }
 
-    loadWines();
+    if (!Array.isArray(wines) || wines.length === 0) {
+      loadWines();
+    }
   }, []);
 
   if(isSearchBoxExpanded) return null;

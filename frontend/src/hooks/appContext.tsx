@@ -17,13 +17,20 @@ interface Wine {
   winery?: string;
 }
 
+interface Country {
+  id?: number;
+  name?: string;
+}
+
 interface AppContextData {
   isSearchBoxExpanded: boolean;
   wine: Wine;
   wines: Wine[];
+  countries: Country[];
   handleIsSearchBoxExpanded(value: boolean) : void;
   handleWine(wine: Wine): void;
   handleWines(wines: Wine[]): void;
+  handleCountries(countries: Country[]): void;
 }
 
 interface AppContextProviderProps {
@@ -39,6 +46,8 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
 
   const [wines, setWines] = useState<Wine[]>({} as Wine[]);
 
+  const [countries, setCountries] = useState<Country[]>({} as Country[]);
+
   const handleIsSearchBoxExpanded = useCallback((isSearchBoxExpanded: boolean) => {
     setIsSearchBoxExpanded(isSearchBoxExpanded);
   }, []);
@@ -51,15 +60,21 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
     setWines(wines);
   }, []);
 
+  const handleCountries = useCallback((countries: Country[]) => {
+    setCountries(countries);
+  }, []);
+
 
   return (
     <AppContext.Provider value={{ 
       isSearchBoxExpanded,
       wine,
       wines,
+      countries,
       handleIsSearchBoxExpanded,
       handleWine,
-      handleWines
+      handleWines,
+      handleCountries
       }}>
       {children}
     </AppContext.Provider>
