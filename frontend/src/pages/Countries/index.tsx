@@ -15,7 +15,6 @@ const Countries: React.FC = () => {
 
       try {
         const response = await api.get('countries');
-        console.table(response.data);
         handleCountries(response.data);
       } catch (err) {
         console.error("API error:", err);
@@ -33,12 +32,14 @@ const Countries: React.FC = () => {
     return <div>Loading...</div>;
   }
 
+  // console.table(countries);
+
   return (
     <Container>
       <h1>Countries</h1>
       {Array.isArray(countries) &&
         countries.map((country, index) => (
-          <Country key={index} href={`/country/${country.name}`}>{country.name}</Country>
+          <Country key={index} href={`/country/${country}`}>{country}</Country>
         ))}
       
     </Container>
