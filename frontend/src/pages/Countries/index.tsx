@@ -32,8 +32,6 @@ const Countries: React.FC = () => {
     return <div>Loading...</div>;
   }
 
-  // console.table(countries);
-
   return (
     <Container>
       <h1>Countries</h1>
