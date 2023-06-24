@@ -17,22 +17,19 @@ interface Wine {
   winery?: string;
 }
 
-// interface Country {
-//   id?: number;
-//   name?: string;
-// }
-
 interface AppContextData {
   isSearchBoxExpanded: boolean;
   wine: Wine;
   wines: Wine[];
-  // countries: Country[];
   countries: string[];
+  varieties: string[];
+  wineries: string[];
   handleIsSearchBoxExpanded(value: boolean) : void;
   handleWine(wine: Wine): void;
   handleWines(wines: Wine[]): void;
-  // handleCountries(countries: Country[]): void;
   handleCountries(countries: string[]): void;
+  handleVarieties(varieties: string[]): void;
+  handleWineries(wineries: string[]): void;
 }
 
 interface AppContextProviderProps {
@@ -48,8 +45,11 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
 
   const [wines, setWines] = useState<Wine[]>({} as Wine[]);
 
-  // const [countries, setCountries] = useState<Country[]>({} as Country[]);
   const [countries, setCountries] = useState<string[]>({} as string[]);
+
+  const [varieties, setVarieties] = useState<string[]>({} as string[]);
+
+  const [wineries, setWineries] = useState<string[]>({} as string[]);
 
   const handleIsSearchBoxExpanded = useCallback((isSearchBoxExpanded: boolean) => {
     setIsSearchBoxExpanded(isSearchBoxExpanded);
@@ -63,9 +63,16 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
     setWines(wines);
   }, []);
 
-  // const handleCountries = useCallback((countries: Country[]) => {
   const handleCountries = useCallback((countries: string[]) => {
     setCountries(countries);
+  }, []);
+
+  const handleVarieties = useCallback((varieties: string[]) => {
+    setVarieties(varieties);
+  }, []);
+
+  const handleWineries = useCallback((wineries: string[]) => {
+    setWineries(wineries);
   }, []);
 
 
@@ -75,10 +82,14 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
       wine,
       wines,
       countries,
+      varieties,
+      wineries,
       handleIsSearchBoxExpanded,
       handleWine,
       handleWines,
-      handleCountries
+      handleCountries,
+      handleVarieties,
+      handleWineries
       }}>
       {children}
     </AppContext.Provider>

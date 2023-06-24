@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useAppContext } from '../../hooks/appContext';
 import api from "../../services/api";
 import { Container, Variety } from './styles';
 
 const Varieties: React.FC = () => {
 
-  const [varieties, setWinesArray] = useState<string[]>([]);
+  const { isSearchBoxExpanded, varieties, handleVarieties } = useAppContext();
   const dataFetchedRef = useRef(false);
 
   useEffect(() => {
@@ -14,25 +15,31 @@ const Varieties: React.FC = () => {
 
       try {
         const response = await api.get('varieties');
-        setWinesArray(response.data as string[]);
+        handleVarieties(response.data);
       } catch (err) {
         console.error("API error:", err);
       }
     }
 
-    loadWines();
+    if (!Array.isArray(varieties) || varieties.length === 0) {
+      loadWines();
+    }
   }, []);
 
-  if (varieties.length === 0) {
+  if(isSearchBoxExpanded) return null;
+
+  if (!Array.isArray(varieties)) {
     return <div>Loading...</div>;
   }
 
   return (
     <Container>
       <h1>Varieties</h1>
-      {varieties.map((wine) => (
-        <Variety key={wine} href={`/variety/${wine}`}>{wine}</Variety>
-      ))}
+      {Array.isArray(varieties) &&
+        varieties.map((variety, index) => (
+          <Variety key={index} href={`/variety/${variety}`}>{variety}</Variety>
+        ))}
+      
     </Container>
   );
 };
