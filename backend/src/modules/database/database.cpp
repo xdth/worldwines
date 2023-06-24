@@ -497,7 +497,7 @@ std::vector<Wine> db_list_by_country(const std::string& parameter) {
 // Retrieve list of wine varieties in the DB
 std::vector<std::string> db_list_varieties() {
   std::vector<std::string> result;
-  std::string select_sql = "SELECT DISTINCT variety FROM wines WHERE variety IS NOT NULL AND variety <> '' ORDER BY variety ASC";
+  std::string select_sql = "SELECT DISTINCT variety FROM wines WHERE variety IS NOT NULL AND variety <> '' ORDER BY variety ASC LIMIT 500";
 
   result = db_handle_request_string(select_sql);
 
@@ -519,7 +519,7 @@ std::vector<Wine> db_list_by_variety(const std::string& parameter) {
 // Retrieve list of wineries in the DB
 std::vector<std::string> db_list_wineries() {
   std::vector<std::string> result;
-  std::string select_sql = "SELECT DISTINCT winery FROM wines WHERE winery IS NOT NULL AND winery <> '' ORDER BY winery ASC";
+  std::string select_sql = "SELECT DISTINCT winery FROM wines WHERE winery IS NOT NULL AND winery <> '' ORDER BY winery ASC LIMIT 500";
 
   result = db_handle_request_string(select_sql);
 
