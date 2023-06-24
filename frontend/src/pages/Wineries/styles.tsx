@@ -14,7 +14,6 @@ export const Container = styled.div`
 
 export const Winery = styled.a`
   background-color: var(--background);
-  margin: auto;
   margin-bottom: 20px;
   width: 90%;
   max-width: 1000px;
@@ -22,7 +21,7 @@ export const Winery = styled.a`
   transition: transform 0.2s;
   color: var(--white);
   text-decoration: none;
-  display: inline-block;
+  display: flex;
 
   &:hover {
     transform: translateX(10px);
