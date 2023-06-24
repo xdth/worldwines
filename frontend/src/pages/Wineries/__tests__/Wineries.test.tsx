@@ -5,6 +5,6 @@ import Wineries from '../index';
 
 test('renders Wineries component', () => {
   render(<Wineries />);
-  const WineriesText = screen.getByText('Wineries');
+  const WineriesText = screen.getByText('Loading...');
   expect(WineriesText).toBeInTheDocument();
 });

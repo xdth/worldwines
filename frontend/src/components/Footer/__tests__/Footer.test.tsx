@@ -3,7 +3,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Footer from '../index';
 
-test('renders Navbar component', () => {
+test('renders Footer component', () => {
   render(<Footer />);
   const FooterText = screen.getByText('Terms and Conditions');
   expect(FooterText).toBeInTheDocument();

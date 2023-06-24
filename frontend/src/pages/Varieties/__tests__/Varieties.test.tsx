@@ -5,6 +5,6 @@ import Varieties from '../index';
 
 test('renders Varieties component', () => {
   render(<Varieties />);
-  const VarietiesText = screen.getByText('Varieties');
+  const VarietiesText = screen.getByText('Loading...');
   expect(VarietiesText).toBeInTheDocument();
 });

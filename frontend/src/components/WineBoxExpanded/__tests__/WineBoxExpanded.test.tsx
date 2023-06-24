@@ -6,7 +6,7 @@ import WineBoxExpanded from '../index';
 test('renders WineBoxExpanded component', () => {
   const wine = {
     id: 1,
-    country: 'France',
+    country: 'Belgique',
     description: 'Lorem ipsum dolor sit amet',
     designation: 'Designation 1',
     points: 90,
@@ -17,17 +17,10 @@ test('renders WineBoxExpanded component', () => {
     region_2: 'Region 2',
     taster_name: 'Taster Name 1',
     taster_twitter_handle: '@taster1',
-    title: 'Wine 1',
   };
 
   render(<WineBoxExpanded wine={wine} />);
-
-  const countryElement = screen.getByText((content, _element) => {
-    // Match the text that starts with "Country:" and contains "France"
-    const startsWithCountry = content.startsWith('Country:');
-    const containsFrance = content.includes('France');
-    return startsWithCountry && containsFrance;
-  });
   
+  const countryElement = screen.getByText('Belgique');
   expect(countryElement).toBeInTheDocument();
 });

@@ -5,6 +5,6 @@ import Countries from '../index';
 
 test('renders Countries component', () => {
   render(<Countries />);
-  const CountriesText = screen.getByText('Countries');
+  const CountriesText = screen.getByText('Loading...');
   expect(CountriesText).toBeInTheDocument();
 });

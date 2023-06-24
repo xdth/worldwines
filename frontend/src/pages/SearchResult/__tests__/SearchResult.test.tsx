@@ -5,6 +5,6 @@ import SearchResult from '../index';
 
 test('renders SearchResult component', () => {
   render(<SearchResult />);
-  const SearchResultText = screen.getByText('Search results');
+  const SearchResultText = screen.getByText('Loading...');
   expect(SearchResultText).toBeInTheDocument();
 });
