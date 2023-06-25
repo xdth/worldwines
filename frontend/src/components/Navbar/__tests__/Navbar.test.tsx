@@ -1,7 +1,7 @@
 // // @ts-expect-error // get rid of 'React' is declared but its value is never read.ts
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter, Route, RouteProps } from 'react-router-dom';
+import { MemoryRouter, Route, RouteProps, Routes } from 'react-router-dom';
 import Navbar from '../index';
 
 const TestComponent: React.FC<RouteProps> = () => <Navbar />;
@@ -9,7 +9,9 @@ const TestComponent: React.FC<RouteProps> = () => <Navbar />;
 test('renders Navbar component', () => {
   render(
     <MemoryRouter initialEntries={['/']}>
-      <Route path="/" Component={TestComponent} />
+      <Routes>
+        <Route path="/" Component={TestComponent} />
+      </Routes>
     </MemoryRouter>
   );
 
