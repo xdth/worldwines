@@ -1,36 +1,33 @@
 import styled from 'styled-components';
 
 export const StyledInputContainer = styled.div`
-  /* background: #362323; */
-
+  background: #362323;
+  background-color: var(--background);
   position: relative;
   display: inline-block;
   width: 80%;
   margin: auto;
   display: flex;
   justify-content: flex-end;
-  transition: min-height .3s ease-in-out;
-`;
+  transition: height .8s ease-in-out;
 
-export const StyledInputContainerExpanded = styled(StyledInputContainer)`
-  justify-content: center;
-  align-items: center;
-  /* height: 50%; */
-  min-height: 600px;
-`;
+  &.expanded {
+    justify-content: center;
+    align-items: center;
+    height: 600px;
+  }
 
-export const StyledInputContainerReduced = styled(StyledInputContainer)`
-  /* min-height: 70px; */
+  &.reduced {
+    height: 20px;
+  }
 `;
 
 export const StyledInput = styled.div`
-/* background: darkblue; */
+  background: green;
 
   position: relative;
   display: inline-block;
-  /* margin: 30px; */
   margin-right: 30px;
-
 
   @media (max-width: 480px) {
     margin-right: 0;
@@ -38,6 +35,8 @@ export const StyledInput = styled.div`
 `;
 
 export const Input = styled.input`
+  background: darkblue;
+
   border: none;
   border-top: none;
   border-left: none;
@@ -50,18 +49,10 @@ export const Input = styled.input`
   text-align: center;
 `;
 
-export const InputExpanded = styled(Input)`
-  width: 600px;
-`;
-
-export const InputReduced = styled(Input)`
-  width: 300px;
-`;
-
 export const MagnifyingGlass = styled.svg`
-  position: absolute;
-  top: 50%;
+  /* position: absolute;
+  top: 50%; */
   right: 5px;
-  transform: translateY(-50%);
+  /* transform: translateY(-50%); */
   fill: var(--white);
 `;

@@ -2,8 +2,8 @@ import { createGlobalStyle } from 'styled-components';
 // import BackgroundImage from '../assets/background_2400_1599.jpg';
 
 // import BackgroundImage from '../assets/background3.jpg';
-import BackgroundImage from '../assets/background6.jpg';
-// import BackgroundImage from '../assets/background.jpg';
+// import BackgroundImage from '../assets/background6.jpg';
+import BackgroundImage from '../assets/background.jpg';
 // import BackgroundImage from '../assets/background5.jpg';
 
 // import BackgroundImage from '../assets/background2.jpg';
