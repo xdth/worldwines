@@ -1,15 +1,16 @@
 import styled from 'styled-components';
 
 export const StyledInputContainer = styled.div`
-  background: #362323;
-  background-color: var(--background);
+  /* background: #362323;
+  background-color: var(--background); */
   position: relative;
   display: inline-block;
   width: 80%;
   margin: auto;
   display: flex;
   justify-content: flex-end;
-  transition: height .8s ease-in-out;
+  /* transition: height .8s ease-in-out; */
+  transition: height .8s ease-out;
 
   &.expanded {
     justify-content: center;
@@ -20,10 +21,14 @@ export const StyledInputContainer = styled.div`
   &.reduced {
     height: 20px;
   }
+
+  @media (max-width: 480px) {
+    justify-content: center;
+  }
 `;
 
 export const StyledInput = styled.div`
-  background: green;
+  /* background: green; */
 
   position: relative;
   display: inline-block;
@@ -50,9 +55,9 @@ export const Input = styled.input`
 `;
 
 export const MagnifyingGlass = styled.svg`
-  /* position: absolute;
-  top: 50%; */
+  position: absolute;
+  top: 50%;
   right: 5px;
-  /* transform: translateY(-50%); */
+  transform: translateY(-50%);
   fill: var(--white);
 `;

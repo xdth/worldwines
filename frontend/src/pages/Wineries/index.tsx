@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useAppContext } from '../../hooks/appContext';
 import api from "../../services/api";
-import { Container, Winery } from './styles';
+import { Winery } from './styles';
 
 const Wineries: React.FC = () => {
 
@@ -33,14 +33,14 @@ const Wineries: React.FC = () => {
   }
 
   return (
-    <Container>
+    <section>
       <h1>Wineries</h1>
       {Array.isArray(wineries) &&
         wineries.map((winery, index) => (
           <Winery key={index} href={`/winery/${winery}`}>{winery}</Winery>
         ))}
       
-    </Container>
+    </section>
   );
 };
 

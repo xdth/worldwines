@@ -1,21 +1,8 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
-  width: 50%;
-  min-width: 700px;
-  margin: auto;
-
-  @media (max-width: 480px) {
-    width: 90%;
-    min-width: 400px;
-    margin: auto;
-  }
-`;
-
 export const Country = styled.a`
   background-color: var(--background);
   margin-bottom: 20px;
-  width: 90%;
   max-width: 1000px;
   padding: 20px;
   transition: transform 0.2s;
@@ -29,7 +16,6 @@ export const Country = styled.a`
   }
 
   @media (max-width: 480px) {
-    width: 90%;
-    margin: 10px auto;
+    /* margin: 10px auto; */
   }
 `;

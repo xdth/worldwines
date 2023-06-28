@@ -50,10 +50,26 @@ color: #ad12a0;
     color: white;
   }
 
+  section {
+    /* background: gray; */
+
+    width: 50%;
+    min-width: 700px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: 480px) {
+      width: 90%;
+      min-width: 0;
+      margin: auto;
+    }
+  }
+
   h1 {
     // background-color: var(--background);
     text-align: left;
-    margin: 60px;
+    margin: 60px 0;
     font-size: 2em;
     color: var(--white);
 

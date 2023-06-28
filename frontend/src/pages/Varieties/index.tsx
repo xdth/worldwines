@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useAppContext } from '../../hooks/appContext';
 import api from "../../services/api";
-import { Container, Variety } from './styles';
+import { Variety } from './styles';
 
 const Varieties: React.FC = () => {
 
@@ -33,14 +33,14 @@ const Varieties: React.FC = () => {
   }
 
   return (
-    <Container>
+    <section>
       <h1>Varieties</h1>
       {Array.isArray(varieties) &&
         varieties.map((variety, index) => (
           <Variety key={index} href={`/variety/${variety}`}>{variety}</Variety>
         ))}
       
-    </Container>
+    </section>
   );
 };
 

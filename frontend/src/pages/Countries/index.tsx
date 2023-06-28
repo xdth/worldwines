@@ -1,12 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { useAppContext } from '../../hooks/appContext';
 import api from "../../services/api";
-import { Container, Country } from './styles';
+import { Country } from './styles';
 
 const Countries: React.FC = () => {
 
   const { isSearchBoxExpanded, countries, handleCountries } = useAppContext();
   const dataFetchedRef = useRef(false);
+  const containerClassName = isSearchBoxExpanded ? 'expanded' : 'reduced';
 
   useEffect(() => {
     async function loadWines(): Promise<void> {
@@ -26,21 +27,21 @@ const Countries: React.FC = () => {
     }
   }, []);
 
-  if(isSearchBoxExpanded) return null;
+  // if(isSearchBoxExpanded) return null;
 
   if (!Array.isArray(countries)) {
     return <div>Loading...</div>;
   }
 
   return (
-    <Container>
+    <section className={containerClassName}>
       <h1>Countries</h1>
       {Array.isArray(countries) &&
         countries.map((country, index) => (
           <Country key={index} href={`/country/${country}`}>{country}</Country>
         ))}
       
-    </Container>
+    </section>
   );
 };
 
