@@ -51,13 +51,26 @@ color: #ad12a0;
   }
 
   section {
-    /* background: gray; */
+    background: gray;
 
     width: 50%;
     min-width: 700px;
     margin: auto;
     display: flex;
     flex-direction: column;
+    transition: height .8s ease-out;
+
+    &.expanded {
+    /* justify-content: center;
+    align-items: center;
+    height: 600px; */
+    background: purple;
+    }
+
+    &.reduced {
+      background: green;
+      display: hidden;
+    }
 
     @media (max-width: 480px) {
       width: 90%;
