@@ -14,6 +14,7 @@ Search among the most important wines of the planet to obtain interesting inform
       <img src="https://i.imgur.com/t1FEF0O.png" alt="screenshot">
     </td>
     <td style="border: none;">
+      <!-- <img src="https://raw.githubusercontent.com/xdth/worldwines/main/frontend/src/assets/wwapp_mobile.png" alt="screenshot"> -->
       <img src="https://i.imgur.com/wYsFC2Z.png" alt="screenshot">
     </td>
   </tr>
@@ -56,8 +57,7 @@ sqlite3
 https://github.com/catchorg/Catch2
 
 ### Front-End
-Autocomplete no input principal, pra q se eu comecar a digitar Brazil ou Vinho Seco ou whatever, ja aparecam as sugestoes.
- (next version?)
+Autocomplete no input principal (next version?)
 
 ### Docker
 
@@ -66,3 +66,4 @@ Autocomplete no input principal, pra q se eu comecar a digitar Brazil ou Vinho S
 
 id,country,description,designation,points,price,province,region_1,region_2,taster_name,taster_twitter_handle,title,variety,winery
 
+**[UNDER CONSTRUCTION - WORK IN PROGRESS]**
