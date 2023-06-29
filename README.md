@@ -13,7 +13,7 @@ Search among the most important wines of the planet to obtain interesting inform
       <img src="https://raw.githubusercontent.com/xdth/worldwines/main/frontend/src/assets/wwapp.png" alt="screenshot">
     </td>
     <td style="border: none;">
-      <img src="https://github.com/xdth/worldwines/blob/main/frontend/src/assets/wwapp_mobile.png" alt="screenshot">
+      <img src="https://raw.githubusercontent.com/xdth/worldwines/main/frontend/src/assets/wwapp_mobile.png" alt="screenshot">
     </td>
   </tr>
 </table> 
