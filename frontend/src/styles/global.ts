@@ -51,7 +51,7 @@ color: #ad12a0;
   }
 
   section {
-    background: gray;
+    /* background: gray; */
 
     width: 50%;
     min-width: 700px;
