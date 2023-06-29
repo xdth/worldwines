@@ -1,7 +1,7 @@
 **[UNDER CONSTRUCTION - WORK IN PROGRESS]**
 
 
-# worldwines
+# WorldWines AI Search Engine
 
 Search among the most important wines of the planet to obtain interesting information and reviews.
 
