@@ -10,10 +10,11 @@ Search among the most important wines of the planet to obtain interesting inform
  <table style="width:100%; border: none;">
   <tr style="border: none;">
     <td style="border: none;">
-      <img src="https://raw.githubusercontent.com/xdth/worldwines/main/frontend/src/assets/wwapp.png" alt="screenshot">
+      <!-- <img src="https://raw.githubusercontent.com/xdth/worldwines/main/frontend/src/assets/wwapp.png" alt="screenshot"> -->
+      <img src="https://i.imgur.com/t1FEF0O.png" alt="screenshot">
     </td>
     <td style="border: none;">
-      <img src="https://raw.githubusercontent.com/xdth/worldwines/main/frontend/src/assets/wwapp_mobile.png" alt="screenshot">
+      <img src="https://i.imgur.com/wYsFC2Z.png" alt="screenshot">
     </td>
   </tr>
 </table> 
