@@ -5,10 +5,23 @@
 
 Search among the most important wines of the planet to obtain interesting information and reviews.
 
+## Screenshots
+
+ <table style="width:100%; border: none;">
+  <tr style="border: none;">
+    <td style="border: none;">
+      <img src="https://github.com/xdth/worldwines/blob/main/frontend/src/assets/wwapp.png" alt="screenshot">
+    </td>
+    <td style="border: none;">
+      <img src="https://github.com/xdth/worldwines/blob/main/frontend/src/assets/wwapp_mobile.png" alt="screenshot">
+    </td>
+  </tr>
+</table> 
+
 
 ## Tech
 
-C++ for the rest backend, React JS for the front-end and SQLite for the database.
+ChatGPT AI, C++ for the rest backend, React JS for the front-end and SQLite for the database.
 
 ### API
 
