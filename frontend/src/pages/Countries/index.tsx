@@ -7,7 +7,7 @@ const Countries: React.FC = () => {
 
   const { isSearchBoxExpanded, countries, handleCountries } = useAppContext();
   const dataFetchedRef = useRef(false);
-  const containerClassName = isSearchBoxExpanded ? 'expanded' : 'reduced';
+  const containerClassName = isSearchBoxExpanded ? 'reduced' : 'expanded';
 
   useEffect(() => {
     async function loadWines(): Promise<void> {
