@@ -28,6 +28,9 @@ const Navbar: React.FC = () => {
         <MenuItem>
           <NavLink to="/wineries" className={`nav-link ${isActive('/wineries') && 'active'}`}>Wineries</NavLink>
         </MenuItem>
+        <MenuItem>
+          <NavLink to="/wine" className={`nav-link ${isActive('/wine') && 'active'}`}>Wine</NavLink>
+        </MenuItem>
       </Menu>
     </Container>
   );

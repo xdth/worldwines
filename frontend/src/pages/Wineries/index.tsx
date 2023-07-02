@@ -26,7 +26,7 @@ const Wineries: React.FC = () => {
     }
   }, []);
 
-  if(isSearchBoxExpanded) return null;
+  // if(isSearchBoxExpanded) return null;
 
   if (!Array.isArray(wineries)) {
     return <div>Loading...</div>;

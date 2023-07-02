@@ -5,7 +5,7 @@ export const WineBoxReducedContainer = styled.div`
   /* border: 1px solid var(--white); */
   margin: auto;
   margin-bottom: 20px;
-  width: 90%;
+  /* width: 90%; */
   max-width: 1000px;
   padding: 20px;
   transition: transform 0.2s;
@@ -28,6 +28,7 @@ export const WineBoxReducedContainer = styled.div`
       color: var(--purple);
     } */
   }
+
   .wine-details {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -52,9 +53,8 @@ export const WineBoxReducedContainer = styled.div`
     grid-column: 1 / span 2; /* Span across two columns */
   }
 
-
   @media (max-width: 480px) {
-    width: 90%;
-    margin: 10px auto;
+    /* width: 90%;
+    margin: 10px auto; */
   }
 `;

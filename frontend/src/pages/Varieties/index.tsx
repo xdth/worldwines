@@ -26,7 +26,7 @@ const Varieties: React.FC = () => {
     }
   }, []);
 
-  if(isSearchBoxExpanded) return null;
+  // if(isSearchBoxExpanded) return null;
 
   if (!Array.isArray(varieties)) {
     return <div>Loading...</div>;

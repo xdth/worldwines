@@ -12,7 +12,7 @@ export const Country = styled.a`
 
   &:hover {
     transform: translateX(10px);
-    color: var(--purple);
+    /* color: var(--purple); */
   }
 
   @media (max-width: 480px) {
