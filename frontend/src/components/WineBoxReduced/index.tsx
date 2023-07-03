@@ -1,5 +1,6 @@
 import React from 'react';
 import { WineBoxReducedContainer } from './styles';
+import { NavLink } from 'react-router-dom';
 
 // @todo omit useless properties
 interface Wine {
@@ -26,7 +27,7 @@ interface WineBoxReducedProps {
 const WineBoxReduced: React.FC<WineBoxReducedProps> = ({ wine }) => {
   return (
       <WineBoxReducedContainer>
-        <a href={`/wine/${wine.id}`}>
+        <NavLink to={`/wine/${wine.id}`}>
           <div className="wine-details">
             <h2 key={wine.id}>{wine.title}</h2>
             <p>
@@ -52,7 +53,7 @@ const WineBoxReduced: React.FC<WineBoxReducedProps> = ({ wine }) => {
               <span className="read-more">read more</span>
             </p>
           </div>
-        </a>
+        </NavLink>
       </WineBoxReducedContainer>
   );
 };

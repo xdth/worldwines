@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { WineBoxExpandedContainer } from './styles';
 
 interface Wine {
@@ -23,9 +24,10 @@ interface WineBoxExpandedProps {
 }
 
 const WineBoxExpanded: React.FC<WineBoxExpandedProps> = ({ wine }) => {
+
   return (
     <WineBoxExpandedContainer>
-      <a href={`/wine/${wine.id}`}>
+      <Link to={`/wine/${wine.id}`}>
         <div className="wine-details">
           <h2 key={wine.id}>{wine.title}</h2>
           {wine.country && <p><span>Country:</span> {wine.country}</p>}
@@ -45,7 +47,7 @@ const WineBoxExpanded: React.FC<WineBoxExpandedProps> = ({ wine }) => {
           )}
           {wine.description && <p><span>Description:</span> {wine.description}</p>}
         </div>
-      </a>
+      </Link>
     </WineBoxExpandedContainer>
   );
 };

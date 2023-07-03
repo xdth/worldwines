@@ -7,6 +7,7 @@ const Varieties: React.FC = () => {
 
   const { isSearchBoxExpanded, varieties, handleVarieties } = useAppContext();
   const dataFetchedRef = useRef(false);
+  const containerClassName = isSearchBoxExpanded ? 'reduced' : 'expanded';
 
   useEffect(() => {
     async function loadWines(): Promise<void> {
@@ -33,7 +34,7 @@ const Varieties: React.FC = () => {
   }
 
   return (
-    <section>
+    <section className={containerClassName}>
       <h1>Varieties</h1>
       {Array.isArray(varieties) &&
         varieties.map((variety, index) => (

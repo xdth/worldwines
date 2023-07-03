@@ -2,12 +2,14 @@ import React, { useEffect, useRef } from 'react';
 import { useAppContext } from '../../hooks/appContext';
 import api from "../../services/api";
 import WineBoxExpanded from '../../components/WineBoxExpanded';
+import { useMatch } from 'react-router-dom';
 import { Container } from './styles';
 
 const Wine: React.FC = () => {
   const { isSearchBoxExpanded, wine, handleWine } = useAppContext();
   const containerClassName = isSearchBoxExpanded ? 'reduced' : 'expanded';
   const dataFetchedRef = useRef(false);
+  const match = useMatch('/wine/:id');  
 
   useEffect(() => {
     async function loadWines(): Promise<void> {
@@ -15,7 +17,13 @@ const Wine: React.FC = () => {
       dataFetchedRef.current = true;
 
       try {
-        const response = await api.get('wine/1253');
+        const wineId = match?.params.id;
+        if (!wineId) {
+          console.error("Wine ID not found in URL parameters.");
+          return;
+        }
+
+        const response = await api.get(`wine/${wineId}`);
         handleWine(response.data);
       } catch (err) {
         console.error("API error:", err);
@@ -25,7 +33,7 @@ const Wine: React.FC = () => {
     if (!Array.isArray(wine) || wine.length === 0) {
       loadWines();
     }
-  }, []);
+  }, [match]);
 
   // if(isSearchBoxExpanded) return null;
 

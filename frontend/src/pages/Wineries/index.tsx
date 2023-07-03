@@ -7,6 +7,7 @@ const Wineries: React.FC = () => {
 
   const { isSearchBoxExpanded, wineries, handleWineries } = useAppContext();
   const dataFetchedRef = useRef(false);
+  const containerClassName = isSearchBoxExpanded ? 'reduced' : 'expanded';
 
   useEffect(() => {
     async function loadWines(): Promise<void> {
@@ -33,7 +34,7 @@ const Wineries: React.FC = () => {
   }
 
   return (
-    <section>
+    <section className={containerClassName}>
       <h1>Wineries</h1>
       {Array.isArray(wineries) &&
         wineries.map((winery, index) => (
