@@ -2,14 +2,15 @@ import React, { useEffect, useRef } from 'react';
 import { useAppContext } from '../../hooks/appContext';
 import api from "../../services/api";
 import WineBoxExpanded from '../../components/WineBoxExpanded';
-import { useMatch } from 'react-router-dom';
+import { useMatch, useNavigate } from 'react-router-dom';
 import { Container } from './styles';
 
 const Wine: React.FC = () => {
   const { isSearchBoxExpanded, wine, handleWine } = useAppContext();
   const containerClassName = isSearchBoxExpanded ? 'reduced' : 'expanded';
   const dataFetchedRef = useRef(false);
-  const match = useMatch('/wine/:id');  
+  const match = useMatch('/wine/:id');
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadWines(): Promise<void> {
@@ -37,18 +38,10 @@ const Wine: React.FC = () => {
 
   // if(isSearchBoxExpanded) return null;
 
-  // if (!Array.isArray(wine)) {
-  //   return <div>Loading...</div>;
-  // }
-
   return (
     <Container className={containerClassName}>
-      {/* {Array.isArray(wines) && */}
-        {/* wine.map((wine) => (
-          <WineBoxExpanded wine={wine} key={wine.id} />
-        ))
-      // }           */}
-
+      <button onClick={() => navigate(-1)}>Go back</button>
+      <h1 key={wine.id}>{wine.title}</h1>
       <WineBoxExpanded wine={wine} />
     </Container>
   );

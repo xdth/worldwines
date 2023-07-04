@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const WineBoxExpandedContainer = styled.div`
 
 background-color: var(--background);
-  margin: 30px;
   padding: 20px;
 
   a {
@@ -12,7 +11,6 @@ background-color: var(--background);
   }
   
   .wine-details {
-
     p {
       margin: 0;
       line-height: 1.5;

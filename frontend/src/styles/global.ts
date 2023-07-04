@@ -64,7 +64,7 @@ color: #ad12a0;
     /* justify-content: center;
     align-items: center;
     height: 600px; */
-    background: purple;
+    /* background: purple; */
     }
 
     &.reduced {
@@ -90,6 +90,29 @@ color: #ad12a0;
       width: 90%;
       margin: 10px auto;
       padding: 20px;
+    }
+  }
+
+  button {
+    color: var(--white);
+    width: 200px;
+    background: transparent;
+    /* background: gray; */
+    border: 2px solid transparent;
+    cursor: pointer;
+    text-align: left;
+    height: 30px;
+    margin: 15px 0 0;
+
+    &:hover {
+      color: var(--purple);
+    }
+
+    @media (max-width: 480px) {
+      width: 90%;
+      margin: 10px auto;
+      padding: 20px;
+      text-align: center;
     }
   }
 `;

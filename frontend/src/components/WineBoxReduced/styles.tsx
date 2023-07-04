@@ -47,6 +47,9 @@ export const WineBoxReducedContainer = styled.div`
   .read-more {
     font-size: 0.8em;
     /* color: var(--purple); */
+    &:hover {
+      color: var(--purple);
+    }
   }
 
   p:last-child {

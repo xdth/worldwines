@@ -15,5 +15,13 @@ import styled from 'styled-components';
 
 
 export const Container = styled.section`
+  h1 {
+    margin: 15px 0 60px;
 
+    @media (max-width: 480px) {
+      width: 90%;
+      margin: 10px auto;
+      padding: 20px;
+    }
+  }
 `;

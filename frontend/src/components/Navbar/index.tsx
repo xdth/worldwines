@@ -5,10 +5,18 @@ import { NavLink, useLocation } from 'react-router-dom';
 const Navbar: React.FC = () => {
   const location = useLocation();
 
-  const isActive = (path: string): boolean => {
-    return location.pathname === path;
-  };
+  // const isActive = (path: string): boolean => {
+  //   return location.pathname === path;
+  // };
 
+  const isActive = (path: string): boolean => {
+    return (
+      (location.pathname === '/wines' && path === '/wines') || // Exact match for /wines
+      (location.pathname.startsWith('/wine/') && path === '/wines') // Match for /wine/:wineId
+    );
+  };
+  
+  
   return (
     <Container>
       <Logo>world<span>wines</span>.app</Logo>
@@ -27,9 +35,6 @@ const Navbar: React.FC = () => {
         </MenuItem>
         <MenuItem>
           <NavLink to="/wineries" className={`nav-link ${isActive('/wineries') && 'active'}`}>Wineries</NavLink>
-        </MenuItem>
-        <MenuItem>
-          <NavLink to="/wine" className={`nav-link ${isActive('/wine') && 'active'}`}>Wine</NavLink>
         </MenuItem>
       </Menu>
     </Container>

@@ -29,7 +29,7 @@ const WineBoxExpanded: React.FC<WineBoxExpandedProps> = ({ wine }) => {
     <WineBoxExpandedContainer>
       <Link to={`/wine/${wine.id}`}>
         <div className="wine-details">
-          <h2 key={wine.id}>{wine.title}</h2>
+          {/* <h1 key={wine.id}>{wine.title}</h1> */}
           {wine.country && <p><span>Country:</span> {wine.country}</p>}
           {wine.designation && <p><span>Designation:</span> {wine.designation}</p>}
           {wine.points && <p><span>Points:</span> {wine.points}</p>}
