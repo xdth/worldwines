@@ -68,7 +68,7 @@ color: #ad12a0;
     }
 
     &.reduced {
-      background: green;
+      /* background: green; */
       display: hidden;
     }
 
