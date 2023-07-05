@@ -20,5 +20,11 @@ module.exports = {
     '\\.(css|less|sass|scss|svg|jpg)$': 'identity-obj-proxy',
     '\\.(jpg)$': '<rootDir>/path/to/identity-obj-proxy.js',
     '^assets/(.*)$': '<rootDir>/src/assets/$1',
+    '^@/(.*)$': ['<rootDir>/src/$1', '<rootDir>/dist/$1'],
+    '^hooks/(.*)$': '<rootDir>/src/hooks/$1',
+    '^pages/(.*)$': '<rootDir>/src/pages/$1',
+    '^components/(.*)$': '<rootDir>/src/components/$1',
+    '^types/(.*)$': '<rootDir>/src/@types/$1',
+    '^public/(.*)$': '<rootDir>/public/$1',
   },
 };

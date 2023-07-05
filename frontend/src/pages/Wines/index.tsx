@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useAppContext } from '../../hooks/appContext';
 import api from "../../services/api";
 import WineBoxReduced from '../../components/WineBoxReduced';
-import { Container } from './styles';
+// import { Container } from './styles';
 
 const Wines: React.FC = () => {
   

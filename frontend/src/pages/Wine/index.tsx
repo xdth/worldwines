@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { useAppContext } from '../../hooks/appContext';
-import api from "../../services/api";
-import WineBoxExpanded from '../../components/WineBoxExpanded';
+import api from "@/services/api";
+import WineBoxExpanded from '@/components/WineBoxExpanded';
+import { useAppContext } from '@/hooks/appContext';
 import { useMatch, useNavigate } from 'react-router-dom';
 import { Container } from './styles';
 
